@@ -1,3 +1,4 @@
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:rick_and_morty_flutter/Pages/navigation_items.dart';
 import 'package:rick_and_morty_flutter/components/MyNavigationRail.dart';
@@ -90,14 +91,15 @@ class _HomePageState extends State<HomePage> {
       return NavigationDrawer(
         selectedIndex: selectedTabIndex,
         children: [
-          ...navItems.map((item) => Padding(
+          ...navItems.mapIndexed((index, item) => Padding(
               padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 16),
               child: DrawerItem(
-                  item: item, onTap: () => {}, key: Key(item.label))))
+                item: item,
+                onTap: () => {setSelectedTabIndex(index)},
+                key: Key(item.label),
+                isSelected: selectedTabIndex == index,
+              )))
         ],
-        onDestinationSelected: (index) {
-          setSelectedTabIndex(index);
-        },
       );
     }
   }
@@ -105,12 +107,20 @@ class _HomePageState extends State<HomePage> {
 
 class DrawerItem extends StatelessWidget {
   final NavItem item;
+  final bool isSelected;
   final void Function() onTap;
 
-  const DrawerItem({super.key, required this.item, required this.onTap});
+  const DrawerItem(
+      {super.key,
+      required this.item,
+      required this.onTap,
+      this.isSelected = false});
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    var color = isSelected ? theme.primaryColor : theme.iconTheme.color;
+
     return InkWell(
         radius: 50,
         onTap: onTap,
@@ -121,11 +131,14 @@ class DrawerItem extends StatelessWidget {
                     height: 50,
                     child: Row(
                       children: [
-                        Icon(item.icon),
+                        Icon(item.icon, color: color),
                         const SizedBox(
                           width: 5,
                         ),
-                        Text(item.label)
+                        Text(
+                          item.label,
+                          style: TextStyle(color: color),
+                        )
                       ],
                     )))));
   }
