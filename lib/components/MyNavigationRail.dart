@@ -20,6 +20,7 @@ class MyNavigationRail extends StatelessWidget {
   final bool? useIndicator;
   final Color? indicatorColor;
   final void Function(bool current) onExtendedChange;
+  final double iconTurn;
 
   const MyNavigationRail(
       {Key? key,
@@ -37,69 +38,75 @@ class MyNavigationRail extends StatelessWidget {
       this.selectedLabelTextStyle,
       this.unselectedIconTheme,
       this.selectedIconTheme,
-      this.minWidth ,
-      this.minExtendedWidth ,
+      this.minWidth,
+      this.minExtendedWidth,
       this.useIndicator,
       this.indicatorColor,
       required this.onExtendedChange})
-      : super(key: key);
+      : iconTurn = extended ? 0.5 : 0.0,
+        super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    var iconLeft = extended ? 240.0 : 55.0;
+    double iconLeft = extended ? 240.0 : 55.0;
+
     return Stack(
-        clipBehavior: Clip.none,
-        children: [
-      NavigationRail(
-          backgroundColor: backgroundColor,
-          extended: extended,
-          leading: Padding(
-            padding: const EdgeInsets.only(top: 30),
-            child: leading,
-          ),
-          trailing: trailing,
-          destinations: destinations,
-          selectedIndex: selectedIndex,
-          onDestinationSelected: onDestinationSelected,
-          elevation: elevation,
-          groupAlignment: groupAlignment,
-          labelType: labelType,
-          unselectedLabelTextStyle: unselectedLabelTextStyle,
-          selectedLabelTextStyle: selectedLabelTextStyle,
-          unselectedIconTheme: unselectedIconTheme,
-          selectedIconTheme: selectedIconTheme,
-          minWidth: minWidth,
-          minExtendedWidth: minExtendedWidth,
-          useIndicator: useIndicator,
-          indicatorColor: indicatorColor),
-      Positioned(
-          top: 20,
-          left: iconLeft,
-          child: GestureDetector(
-              onTap: () {
-                debugPrint("clicked");
-                onExtendedChange(!extended);
-              },
-              child: Positioned(
-                top: 20,
-                left: iconLeft,
-                child: SizedBox(
-                  width: 30,
-                  height: 30,
-                  child: Container(
-                    decoration: const BoxDecoration(
-                        shape: BoxShape.circle,
-                        color: Colors.white,
-                        boxShadow: [
-                          BoxShadow(
-                              offset: Offset(0.0, .5), //(x,y)
-                              blurRadius: 5.0,
-                              color: Colors.black12)
-                        ]),
-                    child: const Icon(Icons.keyboard_arrow_right_rounded),
-                  ),
-                ),
-              ))),
-    ],);
+      clipBehavior: Clip.none,
+      children: [
+        NavigationRail(
+            backgroundColor: backgroundColor,
+            extended: extended,
+            leading: Padding(
+              padding: const EdgeInsets.only(top: 30),
+              child: leading,
+            ),
+            trailing: trailing,
+            destinations: destinations,
+            selectedIndex: selectedIndex,
+            onDestinationSelected: onDestinationSelected,
+            elevation: elevation,
+            groupAlignment: groupAlignment,
+            labelType: labelType,
+            unselectedLabelTextStyle: unselectedLabelTextStyle,
+            selectedLabelTextStyle: selectedLabelTextStyle,
+            unselectedIconTheme: unselectedIconTheme,
+            selectedIconTheme: selectedIconTheme,
+            minWidth: minWidth,
+            minExtendedWidth: minExtendedWidth,
+            useIndicator: useIndicator,
+            indicatorColor: indicatorColor),
+        AnimatedPositioned(
+            duration: const Duration(milliseconds: 200),
+            top: 20,
+            left: iconLeft,
+            child: Container(
+                decoration: const BoxDecoration(
+                    color: Colors.grey,
+                    shape: BoxShape.circle,
+                    boxShadow: [
+                      BoxShadow(
+                          offset: Offset(0.0, .5), //(x,y)
+                          blurRadius: 5.0,
+                          color: Colors.black12)
+                    ]),
+                child: Material(
+                    shape: const CircleBorder(),
+                    color: Colors.white,
+                    child: InkWell(
+                        customBorder: const CircleBorder(),
+                        onTap: () {
+                          debugPrint("clicked");
+                          onExtendedChange(!extended);
+                        },
+                        child: SizedBox(
+                          width: 30,
+                          height: 30,
+                          child: AnimatedRotation(
+                              duration: const Duration(milliseconds: 200),
+                              turns: iconTurn,
+                              child: const Icon(Icons.keyboard_arrow_right_rounded)),
+                        ))))),
+      ],
+    );
   }
 }
