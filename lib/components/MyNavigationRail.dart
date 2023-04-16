@@ -21,6 +21,7 @@ class MyNavigationRail extends StatelessWidget {
   final Color? indicatorColor;
   final void Function(bool current) onExtendedChange;
   final double iconTurn;
+  final Widget? child;
 
   const MyNavigationRail(
       {Key? key,
@@ -42,6 +43,7 @@ class MyNavigationRail extends StatelessWidget {
       this.minExtendedWidth,
       this.useIndicator,
       this.indicatorColor,
+      this.child,
       required this.onExtendedChange})
       : iconTurn = extended ? 0.5 : 0.0,
         super(key: key);
@@ -53,28 +55,33 @@ class MyNavigationRail extends StatelessWidget {
     return Stack(
       clipBehavior: Clip.none,
       children: [
-        NavigationRail(
-            backgroundColor: backgroundColor,
-            extended: extended,
-            leading: Padding(
-              padding: const EdgeInsets.only(top: 30),
-              child: leading,
-            ),
-            trailing: trailing,
-            destinations: destinations,
-            selectedIndex: selectedIndex,
-            onDestinationSelected: onDestinationSelected,
-            elevation: elevation,
-            groupAlignment: groupAlignment,
-            labelType: labelType,
-            unselectedLabelTextStyle: unselectedLabelTextStyle,
-            selectedLabelTextStyle: selectedLabelTextStyle,
-            unselectedIconTheme: unselectedIconTheme,
-            selectedIconTheme: selectedIconTheme,
-            minWidth: minWidth,
-            minExtendedWidth: minExtendedWidth,
-            useIndicator: useIndicator,
-            indicatorColor: indicatorColor),
+        child ?? Container(),
+        Align(
+            alignment: Alignment.centerLeft,
+            child: Row(children:[
+              NavigationRail(
+                  backgroundColor: backgroundColor,
+                  extended: extended,
+                  leading: Padding(
+                    padding: const EdgeInsets.only(top: 30),
+                    child: leading,
+                  ),
+                  trailing: trailing,
+                  destinations: destinations,
+                  selectedIndex: selectedIndex,
+                  onDestinationSelected: onDestinationSelected,
+                  elevation: elevation,
+                  groupAlignment: groupAlignment,
+                  labelType: labelType,
+                  unselectedLabelTextStyle: unselectedLabelTextStyle,
+                  selectedLabelTextStyle: selectedLabelTextStyle,
+                  unselectedIconTheme: unselectedIconTheme,
+                  selectedIconTheme: selectedIconTheme,
+                  minWidth: minWidth,
+                  minExtendedWidth: minExtendedWidth,
+                  useIndicator: useIndicator,
+                  indicatorColor: indicatorColor)
+            ])),
         AnimatedPositioned(
             duration: const Duration(milliseconds: 200),
             top: 20,
@@ -104,7 +111,8 @@ class MyNavigationRail extends StatelessWidget {
                           child: AnimatedRotation(
                               duration: const Duration(milliseconds: 200),
                               turns: iconTurn,
-                              child: const Icon(Icons.keyboard_arrow_right_rounded)),
+                              child: const Icon(
+                                  Icons.keyboard_arrow_right_rounded)),
                         ))))),
       ],
     );

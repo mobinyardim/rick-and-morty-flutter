@@ -52,30 +52,28 @@ class _HomePageState extends State<HomePage> {
   }
 
   Widget _createBody(BoxConstraints constraints) {
-    var page = Container();
+    var page = Container(
+      color: Colors.red,
+    );
 
     if (isDesktop(constraints)) {
-      return Row(
-        children: [
-          MyNavigationRail(
-            extended: isNavigationRailExtended,
-            onExtendedChange: (current) {
-              seNavigationRailExtended(current);
-            },
-            leading: const SizedBox(
-              height: 30,
-            ),
-            destinations: [
-              ...navItems.map((item) => NavigationRailDestination(
-                  icon: Icon(item.icon), label: Text(item.label)))
-            ],
-            selectedIndex: selectedTabIndex,
-            onDestinationSelected: (index) {
-              setSelectedTabIndex(index);
-            },
-          ),
-          page
+      return  MyNavigationRail(
+        extended: isNavigationRailExtended,
+        onExtendedChange: (current) {
+          seNavigationRailExtended(current);
+        },
+        leading: const SizedBox(
+          height: 30,
+        ),
+        destinations: [
+          ...navItems.map((item) => NavigationRailDestination(
+              icon: Icon(item.icon), label: Text(item.label)))
         ],
+        selectedIndex: selectedTabIndex,
+        onDestinationSelected: (index) {
+          setSelectedTabIndex(index);
+        },
+        child: Expanded(child: page),
       );
     } else {
       return Row(
