@@ -15,6 +15,12 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   var selectedTabIndex = 0;
 
+  void setSelectedTabIndex(int current) {
+    setState(() {
+      selectedTabIndex = current;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return LayoutBuilder(
@@ -42,10 +48,16 @@ class _HomePageState extends State<HomePage> {
     if (isDesktop(constraints)) {
       return Row(
         children: [
-          NavigationRail(destinations: [
-            ...navItems.map((item) => NavigationRailDestination(
-                icon: Icon(item.icon), label: Text(item.label)))
-          ], selectedIndex: selectedTabIndex),
+          NavigationRail(
+            destinations: [
+              ...navItems.map((item) => NavigationRailDestination(
+                  icon: Icon(item.icon), label: Text(item.label)))
+            ],
+            selectedIndex: selectedTabIndex,
+            onDestinationSelected: (index) {
+              setSelectedTabIndex(index);
+            },
+          ),
           page
         ],
       );
@@ -60,12 +72,18 @@ class _HomePageState extends State<HomePage> {
     if (isDesktop(constraints)) {
       return null;
     } else {
-      return NavigationDrawer(selectedIndex: selectedTabIndex, children: [
-        ...navItems.map((item) => Padding(
-            padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 16),
-            child:
-                DrawerItem(item: item, onTap: () => {}, key: Key(item.label))))
-      ]);
+      return NavigationDrawer(
+        selectedIndex: selectedTabIndex,
+        children: [
+          ...navItems.map((item) => Padding(
+              padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 16),
+              child: DrawerItem(
+                  item: item, onTap: () => {}, key: Key(item.label))))
+        ],
+        onDestinationSelected: (index) {
+          setSelectedTabIndex(index);
+        },
+      );
     }
   }
 }
