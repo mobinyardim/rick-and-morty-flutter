@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:rick_and_morty_flutter/Pages/navigation_items.dart';
+import 'package:rick_and_morty_flutter/components/MyNavigationRail.dart';
 
 import '../utils/WindowUtils.dart';
 
@@ -14,10 +15,17 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   var selectedTabIndex = 0;
+  var isNavigationRailExtended = false;
 
   void setSelectedTabIndex(int current) {
     setState(() {
       selectedTabIndex = current;
+    });
+  }
+
+  void seNavigationRailExtended(bool extended) {
+    setState(() {
+      isNavigationRailExtended = extended;
     });
   }
 
@@ -42,13 +50,20 @@ class _HomePageState extends State<HomePage> {
     }
   }
 
-  Row _createBody(BoxConstraints constraints) {
+  Widget _createBody(BoxConstraints constraints) {
     var page = Container();
 
     if (isDesktop(constraints)) {
       return Row(
         children: [
-          NavigationRail(
+          MyNavigationRail(
+            extended: isNavigationRailExtended,
+            onExtendedChange: (current) {
+              seNavigationRailExtended(current);
+            },
+            leading: const SizedBox(
+              height: 30,
+            ),
             destinations: [
               ...navItems.map((item) => NavigationRailDestination(
                   icon: Icon(item.icon), label: Text(item.label)))
