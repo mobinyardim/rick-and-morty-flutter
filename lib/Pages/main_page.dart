@@ -5,16 +5,16 @@ import 'package:rick_and_morty_flutter/components/MyNavigationRail.dart';
 
 import '../utils/WindowUtils.dart';
 
-class HomePage extends StatefulWidget {
-  const HomePage({super.key, required this.title});
+class MainPage extends StatefulWidget {
+  const MainPage({super.key, required this.title});
 
   final String title;
 
   @override
-  State<HomePage> createState() => _HomePageState();
+  State<MainPage> createState() => _MainPageState();
 }
 
-class _HomePageState extends State<HomePage> {
+class _MainPageState extends State<MainPage> {
   var selectedTabIndex = 0;
   var isNavigationRailExtended = false;
 
