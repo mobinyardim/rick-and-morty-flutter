@@ -36,20 +36,6 @@ class _HomePageState extends State<HomePage> {
     }
   }
 
-  BottomNavigationBar? _createBottomNavigation(BoxConstraints constraints) {
-    if (isDesktop(constraints)) {
-      return null;
-    } else {
-      return BottomNavigationBar(
-        currentIndex: selectedTabIndex,
-        items: [
-          ...navItems.map((item) =>
-              BottomNavigationBarItem(icon: Icon(item.icon), label: item.label))
-        ],
-      );
-    }
-  }
-
   Row _createBody(BoxConstraints constraints) {
     var page = Container();
 
