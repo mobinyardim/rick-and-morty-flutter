@@ -1,16 +1,25 @@
 import 'package:flutter/material.dart';
-import 'Pages/home_page.dart';
+import 'package:go_router/go_router.dart';
+import 'Pages/main_page.dart';
 
 void main() {
   runApp(const MyApp());
 }
+
+final routes = GoRouter(routes: [
+  GoRoute(
+      path: "/",
+      builder: (context, state) {
+        return const MainPage(title: "Rick And Morty");
+      })
+]);
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return MaterialApp.router(
       title: 'Flutter Demo',
       theme: ThemeData(
         bottomNavigationBarTheme: const BottomNavigationBarThemeData(
@@ -19,7 +28,7 @@ class MyApp extends StatelessWidget {
         ),
         primarySwatch: Colors.blue,
       ),
-      home: const HomePage(title: 'Flutter Demo Home Page'),
+      routerConfig: routes,
     );
   }
 }
