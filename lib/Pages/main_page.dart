@@ -1,22 +1,24 @@
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:rick_and_morty_flutter/Pages/navigation_items.dart';
 import 'package:rick_and_morty_flutter/components/MyNavigationRail.dart';
+import 'package:rick_and_morty_flutter/routes/routes.dart';
 
 import '../utils/WindowUtils.dart';
 
 class MainPage extends StatefulWidget {
-  const MainPage({super.key, required this.title});
+  const MainPage({super.key, required this.title, required this.child});
 
   final String title;
+  final Widget child;
 
   @override
   State<MainPage> createState() => _MainPageState();
 }
 
 class _MainPageState extends State<MainPage> {
-  var selectedTabIndex = 0;
-  var isNavigationRailExtended = false;
+  int selectedTabIndex = 0;
 
   void setSelectedTabIndex(int current) {
     setState(() {
@@ -24,10 +26,30 @@ class _MainPageState extends State<MainPage> {
     });
   }
 
+  var isNavigationRailExtended = false;
+
   void seNavigationRailExtended(bool extended) {
     setState(() {
       isNavigationRailExtended = extended;
     });
+  }
+
+  void _onItemTapped(int index, BuildContext context) {
+    setSelectedTabIndex(index);
+    switch (index) {
+      case 0:
+        GoRouter.of(context).go(Routes.home.path);
+        break;
+      case 1:
+        GoRouter.of(context).go(Routes.characters.path);
+        break;
+      case 2:
+        GoRouter.of(context).go(Routes.episodes.path);
+        break;
+      case 3:
+        GoRouter.of(context).go(Routes.locations.path);
+        break;
+    }
   }
 
   @override
@@ -52,12 +74,8 @@ class _MainPageState extends State<MainPage> {
   }
 
   Widget _createBody(BoxConstraints constraints) {
-    var page = Container(
-      color: Colors.red,
-    );
-
     if (isDesktop(constraints)) {
-      return  MyNavigationRail(
+      return MyNavigationRail(
         extended: isNavigationRailExtended,
         onExtendedChange: (current) {
           seNavigationRailExtended(current);
@@ -71,14 +89,12 @@ class _MainPageState extends State<MainPage> {
         ],
         selectedIndex: selectedTabIndex,
         onDestinationSelected: (index) {
-          setSelectedTabIndex(index);
+          _onItemTapped(index, context);
         },
-        child: Expanded(child: page),
+        child: Expanded(child: widget.child),
       );
     } else {
-      return Row(
-        children: [page],
-      );
+      return Container(child: widget.child);
     }
   }
 
@@ -93,7 +109,10 @@ class _MainPageState extends State<MainPage> {
               padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 16),
               child: DrawerItem(
                 item: item,
-                onTap: () => {setSelectedTabIndex(index)},
+                onTap: () {
+                  _onItemTapped(index, context);
+                  Navigator.pop(context);
+                },
                 key: Key(item.label),
                 isSelected: selectedTabIndex == index,
               )))
