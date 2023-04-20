@@ -23,17 +23,17 @@ class CharacterItem extends StatelessWidget {
         child: Flex(
           direction: isDesktop(context) ? Axis.horizontal : Axis.vertical,
           children: [
-            ShimmerOrChild(
-                isLoading: character == null,
+            ShimmerOrChildWithData<Character>(
+                data: character,
                 width: ShimmerWidth.custom(
                     size: isDesktop(context) ? 100 : cardWidth),
                 height: ShimmerHeight.custom(
                     size: isDesktop(context) ? 110 : cardWidth),
-                child: Image.network(
-                  character?.image ?? "",
-                  width: isDesktop(context) ? 100 : cardWidth,
-                  height: isDesktop(context) ? 100 : cardWidth,
-                )),
+                getChild: (character) => (Image.network(
+                      character.image,
+                      width: isDesktop(context) ? 100 : cardWidth,
+                      height: isDesktop(context) ? 100 : cardWidth,
+                    ))),
             isDesktop(context)
                 ? Expanded(child: _getItemContent(context))
                 : _getItemContent(context)
@@ -50,16 +50,16 @@ class CharacterItem extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            ShimmerOrChild(
-                isLoading: character == null,
+            ShimmerOrChildWithData(
+                data: character,
                 width: const ShimmerWidth.fullWidth(),
-                child: SizedBox(
+                getChild: (character) => (SizedBox(
                     height: 24,
                     child: Marquee(
-                      text: character?.name ?? "",
+                      text: character.name,
                       style: Theme.of(context).textTheme.titleLarge,
                       scrollAxis: Axis.horizontal,
-                    ))),
+                    )))),
             const SizedBox(height: 4),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -82,11 +82,11 @@ class CharacterItem extends StatelessWidget {
                     child: Text(_getStatus(),
                         style: Theme.of(context).textTheme.bodyLarge)),
                 Text(" - ", style: Theme.of(context).textTheme.bodyLarge),
-                ShimmerOrChild(
-                    isLoading: character == null,
+                ShimmerOrChildWithData(
+                    data: character,
                     width: const ShimmerWidth.medium(),
-                    child: Text(character?.species ?? "",
-                        style: Theme.of(context).textTheme.bodyLarge))
+                    getChild: (character) => (Text(character.species,
+                        style: Theme.of(context).textTheme.bodyLarge))),
               ],
             ),
             const SizedBox(height: 6),
@@ -95,14 +95,14 @@ class CharacterItem extends StatelessWidget {
               style: Theme.of(context).textTheme.bodySmall,
             ),
             const SizedBox(height: 4),
-            ShimmerOrChild(
-                isLoading: character == null,
+            ShimmerOrChildWithData(
+                data: character,
                 width: const ShimmerWidth.fullWidth(),
                 height: const ShimmerHeight.small(),
-                child: Text(
-                  character?.location.name ?? "",
-                  style: Theme.of(context).textTheme.bodyMedium,
-                ))
+                getChild: (character) => (Text(
+                      character.location.name,
+                      style: Theme.of(context).textTheme.bodyMedium,
+                    )))
           ],
         ));
   }
