@@ -5,14 +5,14 @@ class ShimmerOrChild extends StatelessWidget {
   final bool isLoading;
   final ShimmerWidth width;
   final ShimmerHeight height;
-  final Widget child;
+  final Widget? child;
 
   const ShimmerOrChild(
       {Key? key,
       this.isLoading = false,
       this.width = const ShimmerWidth.medium(),
       this.height = const ShimmerHeight.medium(),
-      required this.child})
+      this.child})
       : super(key: key);
 
   @override
@@ -29,7 +29,33 @@ class ShimmerOrChild extends StatelessWidget {
                     color: Colors.grey),
                 width: width.size,
                 height: height.size)
-            : child);
+            : child ?? Container());
+  }
+}
+
+class ShimmerOrChildWithData<T> extends StatelessWidget {
+
+  final T? data;
+  final ShimmerWidth width;
+  final ShimmerHeight height;
+  final Widget Function(T data) getChild;
+
+  const ShimmerOrChildWithData(
+      {Key? key,
+      this.width = const ShimmerWidth.medium(),
+      this.height = const ShimmerHeight.medium(),
+      this.data,
+      required this.getChild})
+      : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return ShimmerOrChild(
+      isLoading: data == null,
+      width: width,
+      height: height,
+      child: data != null ? getChild(data as T) : null,
+    );
   }
 }
 
