@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:marquee/marquee.dart';
+import 'package:rick_and_morty_flutter/components/shimmer.dart';
 import '../models/Character.dart';
 import '../utils/window_utils.dart';
 
 class CharacterItem extends StatelessWidget {
-  final Character character;
+  final Character? character;
 
-  const CharacterItem({Key? key, required this.character}) : super(key: key);
+  const CharacterItem({Key? key, this.character}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -22,14 +23,20 @@ class CharacterItem extends StatelessWidget {
         child: Flex(
           direction: isDesktop(context) ? Axis.horizontal : Axis.vertical,
           children: [
-            Image.network(
-              character.image,
-              width: isDesktop(context) ? 100 : cardWidth,
-              height: isDesktop(context) ? 100 : cardWidth,
-            ),
+            ShimmerOrChild(
+                isLoading: character == null,
+                width: ShimmerWidth.custom(
+                    size: isDesktop(context) ? 100 : cardWidth),
+                height: ShimmerHeight.custom(
+                    size: isDesktop(context) ? 110 : cardWidth),
+                child: Image.network(
+                  character?.image ?? "",
+                  width: isDesktop(context) ? 100 : cardWidth,
+                  height: isDesktop(context) ? 100 : cardWidth,
+                )),
             isDesktop(context)
                 ? Expanded(child: _getItemContent(context))
-                :  _getItemContent(context)
+                : _getItemContent(context)
           ],
         ),
       ),
@@ -43,16 +50,16 @@ class CharacterItem extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            SizedBox(
-                height: 24,
-                child: Marquee(
-                  text: character.name,
-                  style: Theme
-                      .of(context)
-                      .textTheme
-                      .titleLarge,
-                  scrollAxis: Axis.horizontal,
-                )),
+            ShimmerOrChild(
+                isLoading: character == null,
+                width: const ShimmerWidth.fullWidth(),
+                child: SizedBox(
+                    height: 24,
+                    child: Marquee(
+                      text: character?.name ?? "",
+                      style: Theme.of(context).textTheme.titleLarge,
+                      scrollAxis: Axis.horizontal,
+                    ))),
             const SizedBox(height: 4),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -63,53 +70,46 @@ class CharacterItem extends StatelessWidget {
                     height: 10,
                     child: Container(
                       decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          color: _getStatusColor()),
+                          shape: BoxShape.circle, color: _getStatusColor()),
                     )),
                 const SizedBox(
                   width: 4,
                   height: 4,
                 ),
-                Text(_getStatus(),
-                    style: Theme
-                        .of(context)
-                        .textTheme
-                        .bodyLarge),
-                Text(" - ",
-                    style: Theme
-                        .of(context)
-                        .textTheme
-                        .bodyLarge),
-                Text(character.species,
-                    style: Theme
-                        .of(context)
-                        .textTheme
-                        .bodyLarge)
+                ShimmerOrChild(
+                    isLoading: character == null,
+                    width: const ShimmerWidth.medium(),
+                    child: Text(_getStatus(),
+                        style: Theme.of(context).textTheme.bodyLarge)),
+                Text(" - ", style: Theme.of(context).textTheme.bodyLarge),
+                ShimmerOrChild(
+                    isLoading: character == null,
+                    width: const ShimmerWidth.medium(),
+                    child: Text(character?.species ?? "",
+                        style: Theme.of(context).textTheme.bodyLarge))
               ],
             ),
             const SizedBox(height: 6),
             Text(
               "Last Location:",
-              style: Theme
-                  .of(context)
-                  .textTheme
-                  .bodySmall,
+              style: Theme.of(context).textTheme.bodySmall,
             ),
             const SizedBox(height: 4),
-            Text(
-              character.location.name,
-              style: Theme
-                  .of(context)
-                  .textTheme
-                  .bodyMedium,
-            )
+            ShimmerOrChild(
+                isLoading: character == null,
+                width: const ShimmerWidth.fullWidth(),
+                height: const ShimmerHeight.small(),
+                child: Text(
+                  character?.location.name ?? "",
+                  style: Theme.of(context).textTheme.bodyMedium,
+                ))
           ],
         ));
   }
 
   Color _getStatusColor() {
     Color statusColor = Colors.red;
-    switch (character.status) {
+    switch (character?.status ?? CharacterStatus.unknown) {
       case CharacterStatus.alive:
         {
           statusColor = Colors.green;
@@ -127,7 +127,7 @@ class CharacterItem extends StatelessWidget {
 
   String _getStatus() {
     String statusText = "";
-    switch (character.status) {
+    switch (character?.status ?? CharacterStatus.unknown) {
       case CharacterStatus.alive:
         statusText = "Alive";
         break;
