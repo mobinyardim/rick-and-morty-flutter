@@ -11,3 +11,8 @@ Character fakeCharacter = Character(
     image: "https://rickandmortyapi.com/api/character/avatar/4.jpeg",
     episode: ["episode 1", "episode 2"],
     url: "url");
+
+List<Character> fakeCharacterList = [
+  for (var i = 1; i <= 10; i++) fakeCharacter
+];
+List<Character?> fakeNullCharacterList = [for (var i = 1; i <= 10; i++) null];
