@@ -23,19 +23,19 @@ class CharacterItem extends StatelessWidget {
         child: Flex(
           direction: isDesktop(context) ? Axis.horizontal : Axis.vertical,
           children: [
-            ShimmerOrChildWithData<Character>(
-                data: character,
-                width: ShimmerWidth.custom(
-                    size: isDesktop(context) ? 100 : cardWidth),
-                height: ShimmerHeight.custom(
-                    size: isDesktop(context) ? 110 : cardWidth),
-                getChild: (character) => (Image.network(
-                      character.image,
-                      width: isDesktop(context) ? 100 : cardWidth,
-                      height: isDesktop(context) ? 100 : cardWidth,
-                    ))),
+            AspectRatio(
+                aspectRatio: 1,
+                child: ShimmerOrChildWithData<Character>(
+                    data: character,
+                    width: const ShimmerWidth.fullWidth(),
+                    height: const ShimmerHeight.fullHeight(),
+                    getChild: (character) => (Image.network(
+                          character.image,
+                          width: isDesktop(context) ? 100 : cardWidth,
+                          height: isDesktop(context) ? 100 : cardWidth,
+                        )))),
             isDesktop(context)
-                ? Expanded(child: _getItemContent(context))
+                ?  _getItemContent(context)
                 : _getItemContent(context)
           ],
         ),
@@ -44,67 +44,68 @@ class CharacterItem extends StatelessWidget {
   }
 
   Widget _getItemContent(BuildContext context) {
-    return Padding(
-        padding: const EdgeInsets.all(8),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            ShimmerOrChildWithData(
-                data: character,
-                width: const ShimmerWidth.fullWidth(),
-                getChild: (character) => (SizedBox(
-                    height: 24,
-                    child: Marquee(
-                      text: character.name,
-                      style: Theme.of(context).textTheme.titleLarge,
-                      scrollAxis: Axis.horizontal,
-                    )))),
-            const SizedBox(height: 4),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
+    return Expanded(
+        child: Padding(
+            padding: const EdgeInsets.all(8),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                SizedBox(
-                    width: 10,
-                    height: 10,
-                    child: Container(
-                      decoration: BoxDecoration(
-                          shape: BoxShape.circle, color: _getStatusColor()),
-                    )),
-                const SizedBox(
-                  width: 4,
-                  height: 4,
-                ),
-                ShimmerOrChild(
-                    isLoading: character == null,
-                    width: const ShimmerWidth.medium(),
-                    child: Text(_getStatus(),
-                        style: Theme.of(context).textTheme.bodyLarge)),
-                Text(" - ", style: Theme.of(context).textTheme.bodyLarge),
                 ShimmerOrChildWithData(
                     data: character,
-                    width: const ShimmerWidth.medium(),
-                    getChild: (character) => (Text(character.species,
-                        style: Theme.of(context).textTheme.bodyLarge))),
+                    width: const ShimmerWidth.fullWidth(),
+                    getChild: (character) => (SizedBox(
+                        height: 24,
+                        child: Marquee(
+                          text: character.name,
+                          style: Theme.of(context).textTheme.titleLarge,
+                          scrollAxis: Axis.horizontal,
+                        )))),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    SizedBox(
+                        width: 10,
+                        height: 10,
+                        child: Container(
+                          decoration: BoxDecoration(
+                              shape: BoxShape.circle, color: _getStatusColor()),
+                        )),
+                    const SizedBox(
+                      width: 4,
+                      height: 4,
+                    ),
+                    Expanded(
+                        child: ShimmerOrChild(
+                            isLoading: character == null,
+                            width: const ShimmerWidth.fullWidth(),
+                            child: Text(_getStatus(),
+                                style: Theme.of(context).textTheme.bodyLarge))),
+                    Text(" - ", style: Theme.of(context).textTheme.bodyLarge),
+                    Expanded(
+                        child: ShimmerOrChildWithData(
+                            data: character,
+                            width: const ShimmerWidth.fullWidth(),
+                            getChild: (character) => (Text(character.species,
+                                style:
+                                    Theme.of(context).textTheme.bodyLarge)))),
+                  ],
+                ),
+                Text(
+                  "Last Location:",
+                  style: Theme.of(context).textTheme.bodySmall,
+                ),
+                ShimmerOrChildWithData(
+                    data: character,
+                    width: const ShimmerWidth.fullWidth(),
+                    height: const ShimmerHeight.small(),
+                    getChild: (character) => (Text(
+                          character.location.name,
+                          style: Theme.of(context).textTheme.bodyMedium,
+                        )))
               ],
-            ),
-            const SizedBox(height: 6),
-            Text(
-              "Last Location:",
-              style: Theme.of(context).textTheme.bodySmall,
-            ),
-            const SizedBox(height: 4),
-            ShimmerOrChildWithData(
-                data: character,
-                width: const ShimmerWidth.fullWidth(),
-                height: const ShimmerHeight.small(),
-                getChild: (character) => (Text(
-                      character.location.name,
-                      style: Theme.of(context).textTheme.bodyMedium,
-                    )))
-          ],
-        ));
+            )));
   }
 
   Color _getStatusColor() {
