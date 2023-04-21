@@ -15,4 +15,4 @@ Character fakeCharacter = Character(
 List<Character> fakeCharacterList = [
   for (var i = 1; i <= 10; i++) fakeCharacter
 ];
-List<Character?> fakeNullCharacterList = [for (var i = 1; i <= 10; i++) null];
+List<Character?> fakeNullCharacterList = [for (var i = 1; i <= 6; i++) null];

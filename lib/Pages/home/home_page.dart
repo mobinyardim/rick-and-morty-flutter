@@ -17,15 +17,14 @@ class _HomePAgeState extends State<HomePage> {
     double itemWidth = isDesktop(context) ? 400 : 200;
     double ratio = isDesktop(context) ? 2.3 : 0.56;
 
-    return LayoutBuilder(
-        builder: (BuildContext context, BoxConstraints constraints) =>
-            GridView.builder(
-              gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
-                  maxCrossAxisExtent: itemWidth, childAspectRatio: ratio),
-              itemBuilder: (item, index) => (Align(
-                  child:
-                      CharacterItem(character: fakeNullCharacterList[index]))),
-              itemCount: fakeNullCharacterList.length,
-            ));
+    return Padding(
+        padding: const EdgeInsets.all(20),
+        child: GridView.builder(
+          gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
+              maxCrossAxisExtent: itemWidth, childAspectRatio: ratio),
+          itemBuilder: (item, index) => (Align(
+              child: CharacterItem(character: fakeNullCharacterList[index]))),
+          itemCount: fakeNullCharacterList.length,
+        ));
   }
 }
