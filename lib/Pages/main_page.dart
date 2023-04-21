@@ -91,7 +91,7 @@ class _MainPageState extends State<MainPage> {
         onDestinationSelected: (index) {
           _onItemTapped(index, context);
         },
-        child: Expanded(child: widget.child),
+        child: Padding(padding:const EdgeInsets.all(10),child: widget.child),
       );
     } else {
       return Container(child: widget.child);
