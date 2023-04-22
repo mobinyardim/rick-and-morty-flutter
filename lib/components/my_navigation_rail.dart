@@ -55,7 +55,7 @@ class MyNavigationRail extends StatelessWidget {
     return Stack(
       clipBehavior: Clip.none,
       children: [
-        child ?? Container(),
+        Padding(padding: const EdgeInsets.only(left: 70),child: child,),
         Align(
             alignment: Alignment.centerLeft,
             child: Row(children:[

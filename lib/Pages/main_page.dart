@@ -2,10 +2,10 @@ import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:rick_and_morty_flutter/Pages/navigation_items.dart';
-import 'package:rick_and_morty_flutter/components/MyNavigationRail.dart';
+import 'package:rick_and_morty_flutter/components/my_navigation_rail.dart';
 import 'package:rick_and_morty_flutter/routes/routes.dart';
 
-import '../utils/WindowUtils.dart';
+import '../utils/window_utils.dart';
 
 class MainPage extends StatefulWidget {
   const MainPage({super.key, required this.title, required this.child});
@@ -56,15 +56,15 @@ class _MainPageState extends State<MainPage> {
   Widget build(BuildContext context) {
     return LayoutBuilder(
       builder: (BuildContext context, BoxConstraints constraints) => Scaffold(
-        appBar: _createAppBar(constraints),
-        body: _createBody(constraints),
-        drawer: _createDrawer(constraints),
+        appBar: _createAppBar(context),
+        body: _createBody(context),
+        drawer: _createDrawer(context),
       ),
     );
   }
 
-  AppBar? _createAppBar(BoxConstraints constraints) {
-    if (isDesktop(constraints)) {
+  AppBar? _createAppBar(BuildContext context) {
+    if (isDesktop(context)) {
       return null;
     } else {
       return AppBar(
@@ -73,8 +73,8 @@ class _MainPageState extends State<MainPage> {
     }
   }
 
-  Widget _createBody(BoxConstraints constraints) {
-    if (isDesktop(constraints)) {
+  Widget _createBody(BuildContext context) {
+    if (isDesktop(context)) {
       return MyNavigationRail(
         extended: isNavigationRailExtended,
         onExtendedChange: (current) {
@@ -91,15 +91,15 @@ class _MainPageState extends State<MainPage> {
         onDestinationSelected: (index) {
           _onItemTapped(index, context);
         },
-        child: Expanded(child: widget.child),
+        child: Padding(padding:const EdgeInsets.all(10),child: widget.child),
       );
     } else {
       return Container(child: widget.child);
     }
   }
 
-  NavigationDrawer? _createDrawer(BoxConstraints constraints) {
-    if (isDesktop(constraints)) {
+  NavigationDrawer? _createDrawer(BuildContext context) {
+    if (isDesktop(context)) {
       return null;
     } else {
       return NavigationDrawer(
