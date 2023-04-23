@@ -40,6 +40,7 @@ dependencies:
   marquee: ^2.2.3
   shimmer: ^2.0.0
   rxdart: ^0.27.7
+  http: ^0.13.5
 
 dev_dependencies:
   flutter_test:
