@@ -1,5 +1,5 @@
 import 'package:rick_and_morty_flutter/remote_sources/dto/character_dto.dart';
-import 'package:rick_and_morty_flutter/remote_sources/json_parser/Parsers.dart';
+import 'package:rick_and_morty_flutter/remote_sources/json_parser/parsers.dart';
 import 'package:rick_and_morty_flutter/remote_sources/json_parser/base_json_parser.dart';
 
 class CharacterParser extends BaseJsonParser<CharacterDto> {
