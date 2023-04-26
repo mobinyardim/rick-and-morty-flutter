@@ -1,6 +1,7 @@
 import 'package:rick_and_morty_flutter/remote_sources/dto/response_dto.dart';
 import 'package:rick_and_morty_flutter/remote_sources/json_parser/base_json_parser.dart';
 import '../../utils/logger.dart';
+import 'json_convert_exception.dart';
 
 class ResponseParser<T> extends BaseJsonParser<ResponseDto> {
   final BaseJsonParser<T> resultParser;
@@ -21,7 +22,8 @@ class ResponseParser<T> extends BaseJsonParser<ResponseDto> {
     } catch (e, stackTrace) {
       logger.e(e);
       logger.d(stackTrace);
-      throw Exception("Json convert exception in response parser,$e");
+      throw JsonConvertExceptions(
+          "Json convert exception in response parser,$e");
     }
   }
 

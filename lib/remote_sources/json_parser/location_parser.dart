@@ -1,6 +1,7 @@
 import 'package:rick_and_morty_flutter/remote_sources/dto/location_dto.dart';
 import 'package:rick_and_morty_flutter/remote_sources/json_parser/base_json_parser.dart';
 import '../../utils/logger.dart';
+import 'json_convert_exception.dart';
 
 class LocationParser extends BaseJsonParser<LocationDto> {
   const LocationParser() : super();
@@ -12,7 +13,7 @@ class LocationParser extends BaseJsonParser<LocationDto> {
     } catch (e, stackTrace) {
       logger.e(e);
       logger.d(stackTrace);
-      throw Exception("Json convert exception in location parser,$e");
+      throw JsonConvertExceptions("Json convert exception in location parser,$e");
     }
   }
 
