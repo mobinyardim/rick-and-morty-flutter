@@ -9,6 +9,7 @@ class CharacterDto {
   String gender;
   LocationDto location;
   List<String> episodes;
+  String image;
   String url;
   String created;
 
@@ -20,6 +21,7 @@ class CharacterDto {
       required this.type,
       required this.gender,
       required this.location,
+      required this.image,
       required this.episodes,
       required this.url,
       required this.created});
