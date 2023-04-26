@@ -1,7 +1,6 @@
 class LocationDto {
   String name;
-  String url;
+  String? url;
 
-  LocationDto({required this.url, required this.name});
-
+  LocationDto({this.url, required this.name});
 }
