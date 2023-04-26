@@ -13,7 +13,7 @@ class ResponseParser<T> extends BaseJsonParser<ResponseDto> {
     try {
       var results = (json["results"] as List<dynamic>);
       return ResponseDto(
-          info: Info(
+          info: InfoDto(
               count: json["info"]["count"],
               pages: json["info"]["pages"],
               next: json["info"]["next"],
