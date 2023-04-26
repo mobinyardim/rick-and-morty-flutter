@@ -15,6 +15,7 @@ class CharacterParser extends BaseJsonParser<CharacterDto> {
         status: json["status"],
         species: json["species"],
         type: json["type"],
+        image: json["image"],
         gender: json["gender"],
         episodes: List.from(json['episode']),
         location: locationParser.fromJson(json["location"]),
