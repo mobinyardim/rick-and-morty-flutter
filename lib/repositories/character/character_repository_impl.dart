@@ -8,7 +8,7 @@ import '../../remote_sources/character/character_remote_source.dart';
 class CharacterRepositoryImpl extends CharacterRepository {
   final CharacterRemoteSource characterRemoteSource;
 
-  const CharacterRepositoryImpl({required this.characterRemoteSource});
+  CharacterRepositoryImpl({required this.characterRemoteSource});
 
   @override
   Future<Result<Character>> getAllCharacters(int page) async {
