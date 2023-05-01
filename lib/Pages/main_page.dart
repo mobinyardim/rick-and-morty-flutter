@@ -38,16 +38,16 @@ class _MainPageState extends State<MainPage> {
     setSelectedTabIndex(index);
     switch (index) {
       case 0:
-        GoRouter.of(context).go(Routes.home.path);
+        const HomeRoute().go(context);
         break;
       case 1:
-        GoRouter.of(context).go(Routes.characters.path);
+        const CharactersRoute().go(context);
         break;
       case 2:
-        GoRouter.of(context).go(Routes.episodes.path);
+        const EpisodesRoute().go(context);
         break;
       case 3:
-        GoRouter.of(context).go(Routes.locations.path);
+        const LocationsRoute().go(context);
         break;
     }
   }
@@ -91,7 +91,7 @@ class _MainPageState extends State<MainPage> {
         onDestinationSelected: (index) {
           _onItemTapped(index, context);
         },
-        child: Padding(padding:const EdgeInsets.all(10),child: widget.child),
+        child: Padding(padding: const EdgeInsets.all(10), child: widget.child),
       );
     } else {
       return Container(child: widget.child);
