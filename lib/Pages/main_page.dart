@@ -38,16 +38,16 @@ class _MainPageState extends State<MainPage> {
     setSelectedTabIndex(index);
     switch (index) {
       case 0:
-        const HomeRoute().go(context);
+        const HomeRoute().push(context);
         break;
       case 1:
-        const CharactersRoute().go(context);
+        const CharactersRoute().push(context);
         break;
       case 2:
-        const EpisodesRoute().go(context);
+        const EpisodesRoute().push(context);
         break;
       case 3:
-        const LocationsRoute().go(context);
+        const LocationsRoute().push(context);
         break;
     }
   }
