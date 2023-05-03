@@ -5,13 +5,11 @@ import 'package:rick_and_morty_flutter/Pages/characters/characters_page.dart';
 import 'package:rick_and_morty_flutter/Pages/episodes/episodes_page.dart';
 import 'package:rick_and_morty_flutter/Pages/home/home_page.dart';
 import 'package:rick_and_morty_flutter/Pages/locations/locations_page.dart';
-
-import '../Pages/main_page.dart';
+import 'package:rick_and_morty_flutter/Pages/main_page.dart';
 
 part 'routes.g.dart';
 
-
-@TypedShellRoute<MainPageRoute>(routes: [
+@TypedShellRoute<HomeContainerRoute>(routes: [
   TypedGoRoute<HomeRoute>(path: "/"),
   TypedGoRoute<CharactersRoute>(path: "/characters"),
   TypedGoRoute<EpisodesRoute>(path: "/episodes"),
@@ -19,7 +17,7 @@ part 'routes.g.dart';
   TypedGoRoute<CharacterDetailRoute>(path: "/character-detail/:characterId"),
 ])
 @immutable
-class MainPageRoute extends ShellRouteData {
+class HomeContainerRoute extends ShellRouteData {
   @override
   Widget builder(BuildContext context, GoRouterState state, Widget navigator) {
     return MainPage(title: "Rick And Morty", child: navigator);
