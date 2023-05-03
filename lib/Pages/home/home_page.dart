@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:rick_and_morty_flutter/blocs/home_bloc.dart';
 import 'package:rick_and_morty_flutter/components/character_item.dart';
 import 'package:rick_and_morty_flutter/models/Character.dart';
+import 'package:rick_and_morty_flutter/routes/routes.dart';
 import '../../utils/window_utils.dart';
 
 class HomePage extends StatefulWidget {
@@ -27,7 +28,9 @@ class _HomePageState extends State<HomePage> {
                   gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
                       maxCrossAxisExtent: itemWidth, childAspectRatio: ratio),
                   itemBuilder: (item, index) => (Align(
-                      child: CharacterItem(character: snapshot.data![index]))),
+                      child: CharacterItem(character: snapshot.data![index],onPressed: ()=>{
+                        CharacterDetailRoute(characterId:snapshot.data![index].id).push(context)
+                      },))),
                   itemCount: snapshot.data!.length);
             } else if (snapshot.hasError) {
               return Text(snapshot.error?.toString() ?? "unknown");
