@@ -17,24 +17,21 @@ class ShimmerOrChild extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Shimmer.fromColors(
+    return isLoading ? Shimmer.fromColors(
         baseColor: Colors.black12,
         highlightColor: Colors.black26,
         period: const Duration(milliseconds: 1000),
         enabled: isLoading,
-        child: isLoading
-            ? Container(
-                decoration: const BoxDecoration(
-                    borderRadius: BorderRadius.all(Radius.circular(5)),
-                    color: Colors.grey),
-                width: width.size,
-                height: height.size)
-            : child ?? Container());
+        child: Container(
+            decoration: const BoxDecoration(
+                borderRadius: BorderRadius.all(Radius.circular(5)),
+                color: Colors.grey),
+            width: width.size,
+            height: height.size)) : child ?? Container();
   }
 }
 
 class ShimmerOrChildWithData<T> extends StatelessWidget {
-
   final T? data;
   final ShimmerWidth width;
   final ShimmerHeight height;
