@@ -3,6 +3,7 @@ import 'package:rick_and_morty_flutter/blocs/home_bloc.dart';
 import 'package:rick_and_morty_flutter/components/character_item.dart';
 import 'package:rick_and_morty_flutter/models/Character.dart';
 import 'package:rick_and_morty_flutter/routes/routes.dart';
+import 'package:rick_and_morty_flutter/utils/logger.dart';
 import '../../utils/window_utils.dart';
 
 class HomePage extends StatefulWidget {
@@ -14,23 +15,43 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   @override
+  void initState() {
+    homeBloc.fetchAllMovies();
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+    homeBloc.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     double itemWidth = isDesktop(context) ? 400 : 200;
     double ratio = isDesktop(context) ? 2.3 : 0.56;
-    homeBloc.fetchAllMovies();
+
     return Padding(
         padding: const EdgeInsets.all(20),
-        child: StreamBuilder<List<Character>>(
+        child: StreamBuilder<List<Character?>>(
           stream: homeBloc.allCharacters,
-          builder: (context, AsyncSnapshot<List<Character>> snapshot) {
+          builder: (context, AsyncSnapshot<List<Character?>> snapshot) {
+            logger.i(
+                "hasData:${snapshot.hasData} \n hasError:${snapshot.hasError} \n data:${snapshot.data} \n error:${snapshot.error}");
             if (snapshot.hasData) {
               return GridView.builder(
                   gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
                       maxCrossAxisExtent: itemWidth, childAspectRatio: ratio),
                   itemBuilder: (item, index) => (Align(
-                      child: CharacterItem(character: snapshot.data![index],onPressed: ()=>{
-                        CharacterDetailRoute(characterId:snapshot.data![index].id).push(context)
-                      },))),
+                          child: CharacterItem(
+                        character: snapshot.data![index],
+                        onPressed: () => {
+                          CharacterDetailRoute(
+                                  characterId: snapshot.data![index]?.id ?? "0")
+                              .push(context)
+                        },
+                      ))),
                   itemCount: snapshot.data!.length);
             } else if (snapshot.hasError) {
               return Text(snapshot.error?.toString() ?? "unknown");
