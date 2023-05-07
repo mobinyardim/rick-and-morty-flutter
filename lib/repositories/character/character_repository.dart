@@ -9,5 +9,5 @@ abstract class CharacterRepository {
     return CharacterRepositoryImpl.create();
   }
 
-  Future<Result<Character>> getAllCharacters(int page);
+  Future<PagedData<Character>> getAllCharacters(int page);
 }

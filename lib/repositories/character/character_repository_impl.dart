@@ -18,7 +18,7 @@ class CharacterRepositoryImpl extends CharacterRepository {
   }
 
   @override
-  Future<Result<Character>> getAllCharacters(int page) async {
+  Future<PagedData<Character>> getAllCharacters(int page) async {
     var response = await characterRemoteSource.getAll();
     return charactersResponseConverter.toDomain(response);
   }
