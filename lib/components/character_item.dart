@@ -6,8 +6,10 @@ import '../utils/window_utils.dart';
 
 class CharacterItem extends StatelessWidget {
   final Character? character;
+  final void Function()? onPressed;
 
-  const CharacterItem({Key? key, this.character}) : super(key: key);
+  const CharacterItem({Key? key, this.character, this.onPressed})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -18,28 +20,32 @@ class CharacterItem extends StatelessWidget {
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.all(Radius.circular(15)),
       ),
-      child: SizedBox(
-        width: cardWidth,
-        child: Flex(
-          direction: isDesktop(context) ? Axis.horizontal : Axis.vertical,
-          children: [
-            AspectRatio(
-                aspectRatio: 1,
-                child: ShimmerOrChildWithData<Character>(
-                    data: character,
-                    width: const ShimmerWidth.fullWidth(),
-                    height: const ShimmerHeight.fullHeight(),
-                    getChild: (character) => (Image.network(
-                          character.image,
-                          width: isDesktop(context) ? 100 : cardWidth,
-                          height: isDesktop(context) ? 100 : cardWidth,
-                        )))),
-            isDesktop(context)
-                ?  _getItemContent(context)
-                : _getItemContent(context)
-          ],
-        ),
-      ),
+      child: Material(
+          child: InkWell(
+              onTap: onPressed,
+              child: SizedBox(
+                width: cardWidth,
+                child: Flex(
+                  direction:
+                      isDesktop(context) ? Axis.horizontal : Axis.vertical,
+                  children: [
+                    AspectRatio(
+                        aspectRatio: 1,
+                        child: ShimmerOrChildWithData<Character>(
+                            data: character,
+                            width: const ShimmerWidth.fullWidth(),
+                            height: const ShimmerHeight.fullHeight(),
+                            getChild: (character) => (Image.network(
+                                  character.image,
+                                  width: isDesktop(context) ? 100 : cardWidth,
+                                  height: isDesktop(context) ? 100 : cardWidth,
+                                )))),
+                    isDesktop(context)
+                        ? _getItemContent(context)
+                        : _getItemContent(context)
+                  ],
+                ),
+              ))),
     );
   }
 

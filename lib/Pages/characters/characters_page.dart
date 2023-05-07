@@ -4,10 +4,10 @@ class CharactersPage extends StatefulWidget {
   const CharactersPage({Key? key}) : super(key: key);
 
   @override
-  State<CharactersPage> createState() => _HomePAgeState();
+  State<CharactersPage> createState() => _HomePageState();
 }
 
-class _HomePAgeState extends State<CharactersPage> {
+class _HomePageState extends State<CharactersPage> {
   @override
   Widget build(BuildContext context) {
     return Column(
