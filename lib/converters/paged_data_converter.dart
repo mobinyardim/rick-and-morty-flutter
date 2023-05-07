@@ -2,11 +2,11 @@ import 'package:rick_and_morty_flutter/converters/base_converter.dart';
 import 'package:rick_and_morty_flutter/models/PagedData.dart';
 import 'package:rick_and_morty_flutter/remote_sources/dto/paged_data_dto.dart';
 
-class ResponseConverter<DomainT, DtoT>
+class PagedDataConverter<DomainT, DtoT>
     extends BaseConverter<PagedData<DomainT>, PagedDataDto<DtoT>> {
   final BaseConverter<DomainT, DtoT> dataConverter;
 
-  const ResponseConverter({required this.dataConverter});
+  const PagedDataConverter({required this.dataConverter});
 
   @override
   PagedData<DomainT> toDomain(PagedDataDto<DtoT> dto) {
