@@ -2,7 +2,7 @@ import 'package:rick_and_morty_flutter/converters/base_converter.dart';
 import 'package:rick_and_morty_flutter/converters/character_converter.dart';
 import 'package:rick_and_morty_flutter/converters/location_converter.dart';
 import 'package:rick_and_morty_flutter/converters/response_converter.dart';
-import 'package:rick_and_morty_flutter/models/result.dart';
+import 'package:rick_and_morty_flutter/models/PagedData.dart';
 import 'package:rick_and_morty_flutter/remote_sources/dto/character_dto.dart';
 import 'package:rick_and_morty_flutter/remote_sources/dto/location_dto.dart';
 import 'package:rick_and_morty_flutter/remote_sources/dto/response_dto.dart';
