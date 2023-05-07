@@ -45,6 +45,7 @@ dependencies:
   go_router_builder: ^1.2.2
   build_runner: ^2.3.3
   build_verify: ^3.1.0
+  flutter_bloc: ^8.1.2
 
 dev_dependencies:
   flutter_test:
