@@ -1,6 +1,5 @@
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 import 'package:rick_and_morty_flutter/Pages/navigation_items.dart';
 import 'package:rick_and_morty_flutter/components/my_navigation_rail.dart';
 import 'package:rick_and_morty_flutter/routes/routes.dart';
