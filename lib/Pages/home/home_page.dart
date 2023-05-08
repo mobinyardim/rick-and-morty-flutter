@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:rick_and_morty_flutter/blocs/home_bloc.dart';
+import 'package:rick_and_morty_flutter/blocs/home/home_bloc.dart';
 import 'package:rick_and_morty_flutter/components/character_item.dart';
 import 'package:rick_and_morty_flutter/models/Character.dart';
 import 'package:rick_and_morty_flutter/routes/routes.dart';
