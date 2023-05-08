@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rick_and_morty_flutter/blocs/home/home_bloc.dart';
+import 'package:rick_and_morty_flutter/blocs/home/home_event.dart';
+import 'package:rick_and_morty_flutter/blocs/home/home_state.dart';
 import 'package:rick_and_morty_flutter/components/character_item.dart';
-import 'package:rick_and_morty_flutter/models/Character.dart';
 import 'package:rick_and_morty_flutter/routes/routes.dart';
 import '../../utils/window_utils.dart';
 
@@ -15,8 +17,8 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   @override
   void initState() {
-    homeBloc.fetchAllMovies();
     super.initState();
+    BlocProvider.of<HomeBloc>(context).add(HomeFetchFirstPage());
   }
 
   @override
@@ -26,28 +28,21 @@ class _HomePageState extends State<HomePage> {
 
     return Padding(
         padding: const EdgeInsets.all(20),
-        child: StreamBuilder<List<Character?>>(
-          stream: homeBloc.allCharacters,
-          builder: (context, AsyncSnapshot<List<Character?>> snapshot) {
-            if (snapshot.hasData) {
-              return GridView.builder(
-                  gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
-                      maxCrossAxisExtent: itemWidth, childAspectRatio: ratio),
-                  itemBuilder: (item, index) => (Align(
-                          child: CharacterItem(
-                        character: snapshot.data![index],
-                        onPressed: () => {
-                          CharacterDetailRoute(
-                                  characterId: snapshot.data![index]?.id ?? "0")
-                              .push(context)
-                        },
-                      ))),
-                  itemCount: snapshot.data!.length);
-            } else if (snapshot.hasError) {
-              return Text(snapshot.error?.toString() ?? "unknown");
-            } else {
-              return const Center(child: CircularProgressIndicator());
-            }
+        child: BlocBuilder<HomeBloc, HomeState>(
+          builder: (context, state) {
+            return GridView.builder(
+                gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
+                    maxCrossAxisExtent: itemWidth, childAspectRatio: ratio),
+                itemBuilder: (item, index) => (Align(
+                        child: CharacterItem(
+                      character: state.characters[index],
+                      onPressed: () => {
+                        CharacterDetailRoute(
+                                characterId: state.characters[index]?.id ?? "0")
+                            .push(context)
+                      },
+                    ))),
+                itemCount: state.characters.length);
           },
         ));
   }
