@@ -6,20 +6,24 @@ import 'package:rick_and_morty_flutter/repositories/character/character_reposito
 class CharactersBloc extends Bloc<CharactersEvent, CharactersState> {
   final CharacterRepository characterRepository;
 
-  CharactersBloc({required this.characterRepository}) : super(CharactersInitial()) {
+  CharactersBloc({required this.characterRepository})
+      : super(CharactersInitial()) {
     on<CharactersFetchFirstPage>((event, emit) async {
-      emit(CharactersLoadPage(characters: state.characters));
-      try {
-        var results = await characterRepository.getAllCharacters(1);
-        emit(CharactersIdle(
-            characters: [...state.characters, ...results.results],
-            lastPageInfo: results.info));
-      } catch (e) {
-        emit(CharactersLoadPageError(
-            characters: [...state.characters],
-            lastPageInfo: state.lastPageInfo,
-            error: e as Error));
-      }
+      await _fetchFirstPage(emit);
     });
+  }
+
+  _fetchFirstPage(Emitter<CharactersState> emit) async {
+    emit(CharactersLoadPage(characters: state.characters));
+    try {
+      var results = await characterRepository.getAllCharacters(1);
+      emit(CharactersIdle(
+          characters: [...results.results], lastPageInfo: results.info));
+    } catch (e) {
+      emit(CharactersLoadPageError(
+          characters: [],
+          lastPageInfo: state.lastPageInfo,
+          error: e as Error));
+    }
   }
 }
