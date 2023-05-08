@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rick_and_morty_flutter/blocs/home/characters_bloc.dart';
 import 'package:rick_and_morty_flutter/blocs/home/characters_event.dart';
-import 'package:rick_and_morty_flutter/blocs/home/home_state.dart';
+import 'package:rick_and_morty_flutter/blocs/home/characters_state.dart';
 import 'package:rick_and_morty_flutter/components/character_item.dart';
 import 'package:rick_and_morty_flutter/routes/routes.dart';
 import '../../utils/window_utils.dart';

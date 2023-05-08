@@ -1,6 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rick_and_morty_flutter/blocs/home/characters_event.dart';
-import 'package:rick_and_morty_flutter/blocs/home/home_state.dart';
+import 'package:rick_and_morty_flutter/blocs/home/characters_state.dart';
 import 'package:rick_and_morty_flutter/repositories/character/character_repository.dart';
 
 class CharactersBloc extends Bloc<CharactersEvent, CharactersState> {
