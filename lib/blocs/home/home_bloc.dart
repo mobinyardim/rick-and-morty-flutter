@@ -1,25 +1,25 @@
-import 'package:rick_and_morty_flutter/models/Character.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:rick_and_morty_flutter/blocs/home/home_event.dart';
+import 'package:rick_and_morty_flutter/blocs/home/home_state.dart';
 import 'package:rick_and_morty_flutter/repositories/character/character_repository.dart';
-import 'package:rick_and_morty_flutter/utils/character_faker.dart';
-import 'package:rxdart/rxdart.dart';
 
-class HomeBlock {
-  final _characterRepository = CharacterRepository.create();
+class HomeBloc extends Bloc<HomeEvent, HomeState> {
+  final CharacterRepository characterRepository;
 
-  final _characterFetcher = BehaviorSubject<List<Character?>>();
-
-  Stream<List<Character?>> get allCharacters => _characterFetcher.stream;
-
-  fetchAllMovies() async {
-    _characterFetcher.sink.add(fakeNullCharacterList);
-    await Future.delayed(const Duration(seconds: 3));
-    var result = await _characterRepository.getAllCharacters(0);
-    _characterFetcher.sink.add(result.results);
-  }
-
-  dispose() {
-    _characterFetcher.close();
+  HomeBloc({required this.characterRepository}) : super(HomeInitial()) {
+    on<HomeFetchFirstPage>((event, emit) async {
+      emit(HomeLoadPage(characters: state.characters));
+      try {
+        var results = await characterRepository.getAllCharacters(1);
+        emit(HomeIdle(
+            characters: [...state.characters, ...results.results],
+            lastPageInfo: results.info));
+      } catch (e) {
+        emit(HomeLoadPageError(
+            characters: [...state.characters],
+            lastPageInfo: state.lastPageInfo,
+            error: e as Error));
+      }
+    });
   }
 }
-
-final homeBloc = HomeBlock();
