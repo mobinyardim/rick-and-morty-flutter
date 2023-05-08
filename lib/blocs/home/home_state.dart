@@ -3,12 +3,12 @@ import 'package:rick_and_morty_flutter/utils/character_faker.dart';
 
 import '../../models/Character.dart';
 
-abstract class HomeState {
+abstract class CharactersState {
   abstract final List<Character?> characters;
   abstract final Info? lastPageInfo;
 }
 
-class HomeInitial extends HomeState {
+class CharactersInitial extends CharactersState {
   @override
   List<Character?> get characters => fakeNullCharacterList;
 
@@ -16,17 +16,17 @@ class HomeInitial extends HomeState {
   final Info? lastPageInfo = null;
 }
 
-class HomeLoadPage extends HomeState {
+class CharactersLoadPage extends CharactersState {
   @override
   final List<Character?> characters;
 
   @override
   final Info? lastPageInfo;
 
-  HomeLoadPage({required this.characters, this.lastPageInfo}) : super();
+  CharactersLoadPage({required this.characters, this.lastPageInfo}) : super();
 }
 
-class HomeLoadPageError extends HomeState {
+class CharactersLoadPageError extends CharactersState {
   @override
   final List<Character?> characters;
 
@@ -35,17 +35,17 @@ class HomeLoadPageError extends HomeState {
 
   final Error error;
 
-  HomeLoadPageError(
+  CharactersLoadPageError(
       {required this.characters, this.lastPageInfo, required this.error})
       : super();
 }
 
-class HomeIdle extends HomeState {
+class CharactersIdle extends CharactersState {
   @override
   final List<Character?> characters;
 
   @override
   final Info lastPageInfo;
 
-  HomeIdle({required this.characters, required this.lastPageInfo}) : super();
+  CharactersIdle({required this.characters, required this.lastPageInfo}) : super();
 }

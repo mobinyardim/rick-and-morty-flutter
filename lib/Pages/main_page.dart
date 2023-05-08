@@ -2,7 +2,7 @@ import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rick_and_morty_flutter/Pages/navigation_items.dart';
-import 'package:rick_and_morty_flutter/blocs/home/home_bloc.dart';
+import 'package:rick_and_morty_flutter/blocs/home/characters_bloc.dart';
 import 'package:rick_and_morty_flutter/components/my_navigation_rail.dart';
 import 'package:rick_and_morty_flutter/repositories/character/character_repository.dart';
 import 'package:rick_and_morty_flutter/routes/routes.dart';
@@ -56,9 +56,9 @@ class _MainPageState extends State<MainPage> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider<HomeBloc>(
+    return BlocProvider<CharactersBloc>(
         create: (BuildContext context) {
-          return HomeBloc(
+          return CharactersBloc(
               characterRepository:
                   RepositoryProvider.of<CharacterRepository>(context));
         },

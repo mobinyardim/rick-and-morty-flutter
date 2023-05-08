@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:rick_and_morty_flutter/blocs/home/home_bloc.dart';
-import 'package:rick_and_morty_flutter/blocs/home/home_event.dart';
+import 'package:rick_and_morty_flutter/blocs/home/characters_bloc.dart';
+import 'package:rick_and_morty_flutter/blocs/home/characters_event.dart';
 import 'package:rick_and_morty_flutter/blocs/home/home_state.dart';
 import 'package:rick_and_morty_flutter/components/character_item.dart';
 import 'package:rick_and_morty_flutter/routes/routes.dart';
@@ -18,7 +18,7 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
-    BlocProvider.of<HomeBloc>(context).add(HomeFetchFirstPage());
+    BlocProvider.of<CharactersBloc>(context).add(CharactersFetchFirstPage());
   }
 
   @override
@@ -28,7 +28,7 @@ class _HomePageState extends State<HomePage> {
 
     return Padding(
         padding: const EdgeInsets.all(20),
-        child: BlocBuilder<HomeBloc, HomeState>(
+        child: BlocBuilder<CharactersBloc, CharactersState>(
           builder: (context, state) {
             return GridView.builder(
                 gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
