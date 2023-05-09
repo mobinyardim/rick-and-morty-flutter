@@ -6,6 +6,9 @@ import 'package:rick_and_morty_flutter/blocs/home/characters_state.dart';
 import 'package:rick_and_morty_flutter/components/character_item.dart';
 import 'package:rick_and_morty_flutter/routes/routes.dart';
 import '../../utils/window_utils.dart';
+import 'dart:math';
+
+const int HOME_PAGE_CHARACTERS_COUNT = 6;
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -42,7 +45,8 @@ class _HomePageState extends State<HomePage> {
                             .push(context)
                       },
                     ))),
-                itemCount: state.characters.length);
+                itemCount:
+                    min(state.characters.length, HOME_PAGE_CHARACTERS_COUNT));
           },
         ));
   }
