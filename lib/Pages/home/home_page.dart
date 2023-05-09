@@ -32,22 +32,20 @@ class _HomePageState extends State<HomePage> {
     return Padding(
         padding: const EdgeInsets.all(20),
         child: BlocBuilder<CharactersBloc, CharactersState>(
-          builder: (context, state) {
-            return GridView.builder(
-                gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
-                    maxCrossAxisExtent: itemWidth, childAspectRatio: ratio),
-                itemBuilder: (item, index) => (Align(
-                        child: CharacterItem(
-                      character: state.characters[index],
-                      onPressed: () => {
-                        CharacterDetailRoute(
-                                characterId: state.characters[index]?.id ?? "0")
-                            .push(context)
-                      },
-                    ))),
-                itemCount:
-                    min(state.characters.length, homePageCharactersCount));
-          },
+          builder: (context, state) => (GridView.builder(
+              gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
+                  maxCrossAxisExtent: itemWidth, childAspectRatio: ratio),
+              itemBuilder: (item, index) => (Align(
+                      child: CharacterItem(
+                    character: state.characters[index],
+                    onPressed: () => {
+                      CharacterDetailRoute(
+                              characterId: state.characters[index]?.id ?? "0")
+                          .push(context)
+                    },
+                  ))),
+              itemCount:
+                  min(state.characters.length, homePageCharactersCount))),
         ));
   }
 }
