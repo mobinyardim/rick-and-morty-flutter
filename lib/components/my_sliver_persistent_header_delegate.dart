@@ -43,7 +43,7 @@ class MySliverPersistentHeaderDelegate extends SliverPersistentHeaderDelegate {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 child,
-                TextButton(
+                showSeeMoreButton ? TextButton(
                   onPressed: onSeeMore ?? () {},
                   child: Row(
                       crossAxisAlignment: CrossAxisAlignment.center,
@@ -58,7 +58,7 @@ class MySliverPersistentHeaderDelegate extends SliverPersistentHeaderDelegate {
                         ),
                         const Icon(Icons.keyboard_arrow_right_rounded)
                       ]),
-                )
+                ) : Container()
               ],
             ),
           );
