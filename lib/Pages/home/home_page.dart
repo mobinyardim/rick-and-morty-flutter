@@ -46,6 +46,7 @@ class _HomePageState extends State<HomePage> {
             onSeeMore: () {
               mainPageNavigates.navigateToCharacters();
             },
+            showSeeMoreButton: true,
             title: "Characters",
           )),
         ));
