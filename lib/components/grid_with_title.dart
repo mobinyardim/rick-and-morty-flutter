@@ -9,12 +9,14 @@ class GridWithTitle extends StatelessWidget {
   final bool animateHeader;
   final String title;
   final Function()? onSeeMore;
+  final bool showSeeMoreButton;
 
   const GridWithTitle(
       {Key? key,
       required this.itemsBuilder,
       required this.itemCount,
       required this.title,
+      required this.showSeeMoreButton,
       this.onSeeMore,
       this.animateHeader = true})
       : super(key: key);
@@ -28,7 +30,10 @@ class GridWithTitle extends StatelessWidget {
       slivers: [
         SliverPersistentHeader(
             delegate: MySliverPersistentHeaderDelegate(
-                onSeeMore: onSeeMore, title: title, isAnimated: animateHeader)),
+                onSeeMore: onSeeMore,
+                title: title,
+                isAnimated: animateHeader,
+                showSeeMoreButton: showSeeMoreButton)),
         SliverGrid(
           delegate:
               SliverChildBuilderDelegate((BuildContext context, int index) {
