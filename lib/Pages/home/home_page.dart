@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:rick_and_morty_flutter/Pages/main_page.dart';
 import 'package:rick_and_morty_flutter/blocs/home/characters_bloc.dart';
 import 'package:rick_and_morty_flutter/blocs/home/characters_event.dart';
 import 'package:rick_and_morty_flutter/blocs/home/characters_state.dart';
@@ -26,6 +27,7 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
+    var mainPageNavigates = MainPageNavigates.of(context);
     return Padding(
         padding: const EdgeInsets.all(20),
         child: BlocBuilder<CharactersBloc, CharactersState>(
@@ -41,7 +43,9 @@ class _HomePageState extends State<HomePage> {
             ))),
             itemCount: min(state.characters.length, homePageCharactersCount),
             animateHeader: false,
-            onSeeMore: () {},
+            onSeeMore: () {
+              mainPageNavigates.navigateToCharacters();
+            },
             title: "Characters",
           )),
         ));
