@@ -23,42 +23,40 @@ class MySliverPersistentHeaderDelegate extends SliverPersistentHeaderDelegate {
 
     return isAnimated
         ? AnimatedContainer(
+            color: Theme.of(context).colorScheme.background,
             duration: const Duration(milliseconds: 100),
-            padding: EdgeInsets.lerp(
-              const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
-              const EdgeInsets.only(bottom: 16),
-              progress,
-            ),
-            alignment: Alignment.lerp(
-              Alignment.bottomLeft,
-              Alignment.bottomCenter,
-              progress,
-            ),
-            child: child,
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+            alignment: Alignment.centerLeft,
+            child: (child),
           )
         : Container(
-            padding: const EdgeInsets.only(bottom: 16),
+            color: Theme.of(context).colorScheme.background,
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
             alignment: Alignment.centerLeft,
             child: Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 child,
-                showSeeMoreButton ? TextButton(
-                  onPressed: onSeeMore ?? () {},
-                  child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text(
-                          "Show more",
-                          style: Theme.of(context)
-                              .textTheme
-                              .titleSmall
-                              ?.copyWith(color: Theme.of(context).primaryColor),
-                        ),
-                        const Icon(Icons.keyboard_arrow_right_rounded)
-                      ]),
-                ) : Container()
+                showSeeMoreButton
+                    ? TextButton(
+                        onPressed: onSeeMore ?? () {},
+                        child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text(
+                                "Show more",
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .titleSmall
+                                    ?.copyWith(
+                                        color: Theme.of(context).primaryColor),
+                              ),
+                              const Icon(Icons.keyboard_arrow_right_rounded)
+                            ]),
+                      )
+                    : Container()
               ],
             ),
           );

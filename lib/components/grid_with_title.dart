@@ -29,6 +29,7 @@ class GridWithTitle extends StatelessWidget {
     return CustomScrollView(
       slivers: [
         SliverPersistentHeader(
+          pinned: true,
             delegate: MySliverPersistentHeaderDelegate(
                 onSeeMore: onSeeMore,
                 title: title,
