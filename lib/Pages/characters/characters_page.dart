@@ -30,7 +30,7 @@ class _HomePageState extends State<CharactersPage> {
               },
             ))),
             itemCount: state.characters.length,
-            animateHeader: false,
+            animateHeader: true,
             title: "Characters",
             showSeeMoreButton: false,
           )),
