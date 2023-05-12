@@ -1,16 +1,16 @@
 import 'package:rick_and_morty_flutter/converters/base_converter.dart';
-import 'package:rick_and_morty_flutter/models/result.dart';
-import 'package:rick_and_morty_flutter/remote_sources/dto/response_dto.dart';
+import 'package:rick_and_morty_flutter/models/PagedData.dart';
+import 'package:rick_and_morty_flutter/remote_sources/dto/paged_data_dto.dart';
 
-class ResponseConverter<DomainT, DtoT>
-    extends BaseConverter<Result<DomainT>, ResponseDto<DtoT>> {
+class PagedDataConverter<DomainT, DtoT>
+    extends BaseConverter<PagedData<DomainT>, PagedDataDto<DtoT>> {
   final BaseConverter<DomainT, DtoT> dataConverter;
 
-  const ResponseConverter({required this.dataConverter});
+  const PagedDataConverter({required this.dataConverter});
 
   @override
-  Result<DomainT> toDomain(ResponseDto<DtoT> dto) {
-    return Result(
+  PagedData<DomainT> toDomain(PagedDataDto<DtoT> dto) {
+    return PagedData(
         info: Info(
             count: dto.info.count,
             pages: dto.info.pages,
@@ -20,7 +20,7 @@ class ResponseConverter<DomainT, DtoT>
   }
 
   @override
-  ResponseDto<DtoT> toDto(Result<DomainT> domain) {
+  PagedDataDto<DtoT> toDto(PagedData<DomainT> domain) {
     // TODO: implement toDto
     throw UnimplementedError();
   }

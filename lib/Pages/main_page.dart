@@ -1,10 +1,13 @@
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rick_and_morty_flutter/Pages/navigation_items.dart';
+import 'package:rick_and_morty_flutter/blocs/home/characters_bloc.dart';
 import 'package:rick_and_morty_flutter/components/my_navigation_rail.dart';
+import 'package:rick_and_morty_flutter/repositories/character/character_repository.dart';
 import 'package:rick_and_morty_flutter/routes/routes.dart';
 
+import '../components/drawer_item.dart';
 import '../utils/window_utils.dart';
 
 class MainPage extends StatefulWidget {
@@ -54,13 +57,33 @@ class _MainPageState extends State<MainPage> {
 
   @override
   Widget build(BuildContext context) {
-    return LayoutBuilder(
-      builder: (BuildContext context, BoxConstraints constraints) => Scaffold(
-        appBar: _createAppBar(context),
-        body: _createBody(context),
-        drawer: _createDrawer(context),
-      ),
-    );
+    return MainPageNavigates(
+        navigateToCharacters: () {
+          _onItemTapped(1, context);
+        },
+        navigateToEpisodes: () {
+          _onItemTapped(2, context);
+        },
+        navigateToHome: () {
+          _onItemTapped(0, context);
+        },
+        navigateToLocations: () {
+          _onItemTapped(3, context);
+        },
+        child: BlocProvider<CharactersBloc>(
+            create: (BuildContext context) {
+              return CharactersBloc(
+                  characterRepository:
+                      RepositoryProvider.of<CharacterRepository>(context));
+            },
+            child: LayoutBuilder(
+              builder: (BuildContext context, BoxConstraints constraints) =>
+                  Scaffold(
+                appBar: _createAppBar(context),
+                body: _createBody(context),
+                drawer: _createDrawer(context),
+              ),
+            )));
   }
 
   AppBar? _createAppBar(BuildContext context) {
@@ -122,41 +145,30 @@ class _MainPageState extends State<MainPage> {
   }
 }
 
-class DrawerItem extends StatelessWidget {
-  final NavItem item;
-  final bool isSelected;
-  final void Function() onTap;
+class MainPageNavigates extends InheritedWidget {
+  final Function() navigateToHome;
+  final Function() navigateToCharacters;
+  final Function() navigateToLocations;
+  final Function() navigateToEpisodes;
 
-  const DrawerItem(
-      {super.key,
-      required this.item,
-      required this.onTap,
-      this.isSelected = false});
+  const MainPageNavigates({
+    Key? key,
+    required this.navigateToHome,
+    required this.navigateToCharacters,
+    required this.navigateToLocations,
+    required this.navigateToEpisodes,
+    required Widget child,
+  }) : super(key: key, child: child);
+
+  static MainPageNavigates of(BuildContext context) {
+    final MainPageNavigates? result =
+        context.dependOnInheritedWidgetOfExactType<MainPageNavigates>();
+    assert(result != null, 'No MainPageNavigates found in context');
+    return result!;
+  }
 
   @override
-  Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    var color = isSelected ? theme.primaryColor : theme.iconTheme.color;
-
-    return InkWell(
-        radius: 50,
-        onTap: onTap,
-        child: Padding(
-            padding: const EdgeInsets.symmetric(vertical: 2, horizontal: 6),
-            child: Expanded(
-                child: SizedBox(
-                    height: 50,
-                    child: Row(
-                      children: [
-                        Icon(item.icon, color: color),
-                        const SizedBox(
-                          width: 5,
-                        ),
-                        Text(
-                          item.label,
-                          style: TextStyle(color: color),
-                        )
-                      ],
-                    )))));
+  bool updateShouldNotify(MainPageNavigates old) {
+    return true;
   }
 }

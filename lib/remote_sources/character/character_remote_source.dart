@@ -1,6 +1,6 @@
 import 'package:rick_and_morty_flutter/remote_sources/character/character_remote_source_impl.dart';
 import 'package:rick_and_morty_flutter/remote_sources/dto/character_dto.dart';
-import 'package:rick_and_morty_flutter/remote_sources/dto/response_dto.dart';
+import 'package:rick_and_morty_flutter/remote_sources/dto/paged_data_dto.dart';
 
 abstract class CharacterRemoteSource {
   CharacterRemoteSource();
@@ -9,5 +9,5 @@ abstract class CharacterRemoteSource {
     return CharacterRemoteSourceImpl.create();
   }
 
-  Future<ResponseDto<CharacterDto>> getAll();
+  Future<PagedDataDto<CharacterDto>> getAll();
 }

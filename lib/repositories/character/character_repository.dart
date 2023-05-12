@@ -1,5 +1,5 @@
 import 'package:rick_and_morty_flutter/models/Character.dart';
-import 'package:rick_and_morty_flutter/models/result.dart';
+import 'package:rick_and_morty_flutter/models/PagedData.dart';
 import 'package:rick_and_morty_flutter/repositories/character/character_repository_impl.dart';
 
 abstract class CharacterRepository {
@@ -9,5 +9,5 @@ abstract class CharacterRepository {
     return CharacterRepositoryImpl.create();
   }
 
-  Future<Result<Character>> getAllCharacters(int page);
+  Future<PagedData<Character>> getAllCharacters(int page);
 }

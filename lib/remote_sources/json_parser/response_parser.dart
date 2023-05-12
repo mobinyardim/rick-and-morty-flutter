@@ -1,18 +1,18 @@
-import 'package:rick_and_morty_flutter/remote_sources/dto/response_dto.dart';
+import 'package:rick_and_morty_flutter/remote_sources/dto/paged_data_dto.dart';
 import 'package:rick_and_morty_flutter/remote_sources/json_parser/base_json_parser.dart';
 import '../../utils/logger.dart';
 import 'json_convert_exception.dart';
 
-class ResponseParser<T> extends BaseJsonParser<ResponseDto> {
+class ResponseParser<T> extends BaseJsonParser<PagedDataDto> {
   final BaseJsonParser<T> resultParser;
 
   const ResponseParser({required this.resultParser});
 
   @override
-  ResponseDto<T> fromJson(Map<String, dynamic> json) {
+  PagedDataDto<T> fromJson(Map<String, dynamic> json) {
     try {
       var results = (json["results"] as List<dynamic>);
-      return ResponseDto(
+      return PagedDataDto(
           info: InfoDto(
               count: json["info"]["count"],
               pages: json["info"]["pages"],

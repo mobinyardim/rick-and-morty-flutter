@@ -1,10 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:rick_and_morty_flutter/blocs/home_bloc.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:rick_and_morty_flutter/Pages/main_page.dart';
+import 'package:rick_and_morty_flutter/blocs/home/characters_bloc.dart';
+import 'package:rick_and_morty_flutter/blocs/home/characters_event.dart';
+import 'package:rick_and_morty_flutter/blocs/home/characters_state.dart';
 import 'package:rick_and_morty_flutter/components/character_item.dart';
-import 'package:rick_and_morty_flutter/models/Character.dart';
+import 'package:rick_and_morty_flutter/components/grid_with_title.dart';
 import 'package:rick_and_morty_flutter/routes/routes.dart';
-import 'package:rick_and_morty_flutter/utils/character_faker.dart';
-import '../../utils/window_utils.dart';
+import 'dart:math';
+
+const int homePageCharactersCount = 6;
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -16,41 +21,34 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   @override
   void initState() {
-    homeBloc.fetchAllMovies();
     super.initState();
+    BlocProvider.of<CharactersBloc>(context).add(CharactersFetchFirstPage());
   }
 
   @override
   Widget build(BuildContext context) {
-    double itemWidth = isDesktop(context) ? 400 : 200;
-    double ratio = isDesktop(context) ? 2.3 : 0.56;
-
+    var mainPageNavigates = MainPageNavigates.of(context);
     return Padding(
         padding: const EdgeInsets.all(20),
-        child: StreamBuilder<List<Character?>>(
-          initialData: fakeNullCharacterList,
-          stream: homeBloc.allCharacters,
-          builder: (context, AsyncSnapshot<List<Character?>> snapshot) {
-            if (snapshot.hasData) {
-              return GridView.builder(
-                  gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
-                      maxCrossAxisExtent: itemWidth, childAspectRatio: ratio),
-                  itemBuilder: (item, index) => (Align(
-                          child: CharacterItem(
-                        character: snapshot.data![index],
-                        onPressed: () => {
-                          CharacterDetailRoute(
-                                  characterId: snapshot.data![index]?.id ?? "0")
-                              .push(context)
-                        },
-                      ))),
-                  itemCount: snapshot.data!.length);
-            } else if (snapshot.hasError) {
-              return Text(snapshot.error?.toString() ?? "unknown");
-            } else {
-              return const Center(child: CircularProgressIndicator());
-            }
-          },
+        child: BlocBuilder<CharactersBloc, CharactersState>(
+          builder: (context, state) => (GridWithTitle(
+            itemsBuilder: (item, index) => (Align(
+                child: CharacterItem(
+              character: state.characters[index],
+              onPressed: () => {
+                CharacterDetailRoute(
+                        characterId: state.characters[index]?.id ?? "0")
+                    .push(context)
+              },
+            ))),
+            itemCount: min(state.characters.length, homePageCharactersCount),
+            animateHeader: false,
+            onSeeMore: () {
+              mainPageNavigates.navigateToCharacters();
+            },
+            showSeeMoreButton: true,
+            title: "Characters",
+          )),
         ));
   }
 }

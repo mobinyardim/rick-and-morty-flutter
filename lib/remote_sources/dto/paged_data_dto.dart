@@ -1,8 +1,8 @@
-class ResponseDto<T> {
+class PagedDataDto<T> {
   final InfoDto info;
   final List<T> results;
 
-  const ResponseDto({required this.info, required this.results});
+  const PagedDataDto({required this.info, required this.results});
 }
 
 class InfoDto {

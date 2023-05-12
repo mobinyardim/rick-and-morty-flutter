@@ -1,8 +1,8 @@
-class Result<T> {
+class PagedData<T> {
   Info info;
   List<T> results;
 
-  Result({required this.info, required this.results});
+  PagedData({required this.info, required this.results});
 }
 
 class Info {

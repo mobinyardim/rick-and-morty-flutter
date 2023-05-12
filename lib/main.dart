@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:rick_and_morty_flutter/providers/RepositoryProviders.dart';
 import 'package:rick_and_morty_flutter/routes/routes.dart';
 
 void main() {
@@ -11,9 +12,12 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp.router(
-      title: 'Flutter Demo',
+    return RepositoryProviders(
+        child: MaterialApp.router(
+      title: "Rick and Morty",
       theme: ThemeData(
+        colorScheme: Theme.of(context).colorScheme.copyWith(background: const Color(
+            0xfffafafa)),
         bottomNavigationBarTheme: const BottomNavigationBarThemeData(
           selectedItemColor: Colors.blue,
           unselectedItemColor: Colors.grey,
@@ -21,6 +25,6 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
       ),
       routerConfig: GoRouter(routes: $appRoutes),
-    );
+    ));
   }
 }
