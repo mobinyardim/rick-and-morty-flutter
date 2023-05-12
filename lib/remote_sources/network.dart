@@ -1,5 +1,5 @@
 import 'package:http/http.dart' show Client;
 
-const baseUrl= "https://rickandmortyapi.com/api/";
+const baseUrl= "rickandmortyapi.com";
 
 Client client = Client();
