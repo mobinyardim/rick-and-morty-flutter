@@ -32,6 +32,27 @@ class HomeRoute extends GoRouteData {
   Widget build(BuildContext context, GoRouterState state) {
     return const HomePage();
   }
+
+  @override
+  Page<Function> buildPage(BuildContext context, GoRouterState state) {
+    return CustomTransitionPage<Function>(
+      key: state.pageKey,
+      child: const HomePage(),
+      transitionDuration: const Duration(milliseconds: 150),
+      transitionsBuilder: (BuildContext context,
+          Animation<double> animation,
+          Animation<double> secondaryAnimation,
+          Widget child) {
+        // Change the opacity of the screen using a Curve based on the the animation's
+        // value
+        return FadeTransition(
+          opacity:
+          CurveTween(curve: Curves.easeInOut).animate(animation),
+          child: child,
+        );
+      },
+    );
+  }
 }
 
 @immutable
@@ -41,6 +62,27 @@ class CharactersRoute extends GoRouteData {
   @override
   Widget build(BuildContext context, GoRouterState state) {
     return const CharactersPage();
+  }
+
+  @override
+  Page<Function> buildPage(BuildContext context, GoRouterState state) {
+    return CustomTransitionPage<Function>(
+      key: state.pageKey,
+      child: const CharactersPage(),
+      transitionDuration: const Duration(milliseconds: 150),
+      transitionsBuilder: (BuildContext context,
+          Animation<double> animation,
+          Animation<double> secondaryAnimation,
+          Widget child) {
+        // Change the opacity of the screen using a Curve based on the the animation's
+        // value
+        return FadeTransition(
+          opacity:
+          CurveTween(curve: Curves.easeInOut).animate(animation),
+          child: child,
+        );
+      },
+    );
   }
 }
 
