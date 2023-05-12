@@ -16,8 +16,10 @@ class CharacterRemoteSourceImpl extends CharacterRemoteSource {
   }
 
   @override
-  Future<PagedDataDto<CharacterDto>> getAll() async {
-    var response = await client.get(Uri.parse("$baseUrl/character/"));
+  Future<PagedDataDto<CharacterDto>> getAll(int page) async{
+    final uri = Uri.https(baseUrl, "/api/character/" , {"page": page.toString()});
+
+    final response = await client.get(uri);
     if (response.statusCode == 200) {
       return characterResponseParser.fromJson(json.decode(response.body));
     } else {
