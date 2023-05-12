@@ -59,6 +59,7 @@ class _GridWithTitleState extends State<GridWithTitle> {
               maxCrossAxisExtent: itemWidth, childAspectRatio: ratio),
         )
       ],
+      controller: _scrollController,
     );
   }
 
