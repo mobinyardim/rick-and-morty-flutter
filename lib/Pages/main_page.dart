@@ -2,7 +2,7 @@ import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rick_and_morty_flutter/Pages/navigation_items.dart';
-import 'package:rick_and_morty_flutter/blocs/home/characters_bloc.dart';
+import 'package:rick_and_morty_flutter/blocs/characters/characters_bloc.dart';
 import 'package:rick_and_morty_flutter/components/my_navigation_rail.dart';
 import 'package:rick_and_morty_flutter/repositories/character/character_repository.dart';
 import 'package:rick_and_morty_flutter/routes/routes.dart';

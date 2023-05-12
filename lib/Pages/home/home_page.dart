@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rick_and_morty_flutter/Pages/main_page.dart';
-import 'package:rick_and_morty_flutter/blocs/home/characters_bloc.dart';
-import 'package:rick_and_morty_flutter/blocs/home/characters_event.dart';
-import 'package:rick_and_morty_flutter/blocs/home/characters_state.dart';
+import 'package:rick_and_morty_flutter/blocs/characters/characters_bloc.dart';
+import 'package:rick_and_morty_flutter/blocs/characters/characters_event.dart';
+import 'package:rick_and_morty_flutter/blocs/characters/characters_state.dart';
 import 'package:rick_and_morty_flutter/components/character_item.dart';
 import 'package:rick_and_morty_flutter/components/grid_with_title.dart';
 import 'package:rick_and_morty_flutter/routes/routes.dart';
