@@ -16,6 +16,8 @@ class MyApp extends StatelessWidget {
         child: MaterialApp.router(
       title: "Rick and Morty",
       theme: ThemeData(
+        colorScheme: Theme.of(context).colorScheme.copyWith(background: const Color(
+            0xfffafafa)),
         bottomNavigationBarTheme: const BottomNavigationBarThemeData(
           selectedItemColor: Colors.blue,
           unselectedItemColor: Colors.grey,
