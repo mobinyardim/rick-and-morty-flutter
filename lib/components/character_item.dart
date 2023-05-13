@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:marquee/marquee.dart';
 import 'package:rick_and_morty_flutter/components/shimmer.dart';
@@ -62,10 +63,17 @@ class CharacterItem extends StatelessWidget {
                     width: const ShimmerWidth.fullWidth(),
                     getChild: (character) => (SizedBox(
                         height: 24,
-                        child: Marquee(
-                          text: character.name,
+                        child: AutoSizeText(
+                          character.name,
                           style: Theme.of(context).textTheme.titleLarge,
-                          scrollAxis: Axis.horizontal,
+                          maxLines: 1,
+                          overflowReplacement: Marquee(
+                            blankSpace: 20,
+                            pauseAfterRound: const Duration(milliseconds: 1000),
+                            text: character.name,
+                            style: Theme.of(context).textTheme.titleLarge,
+                            scrollAxis: Axis.horizontal,
+                          ),
                         )))),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -87,29 +95,37 @@ class CharacterItem extends StatelessWidget {
                             isLoading: character == null,
                             width: const ShimmerWidth.fullWidth(),
                             child: Text(_getStatus(),
-                                style: Theme.of(context).textTheme.bodyLarge))),
-                    Text(" - ", style: Theme.of(context).textTheme.bodyLarge),
+                                style: Theme.of(context).textTheme.bodySmall))),
+                    Text(" - ", style: Theme.of(context).textTheme.bodySmall),
                     Expanded(
                         child: ShimmerOrChildWithData(
                             data: character,
                             width: const ShimmerWidth.fullWidth(),
                             getChild: (character) => (Text(character.species,
                                 style:
-                                    Theme.of(context).textTheme.bodyLarge)))),
+                                    Theme.of(context).textTheme.bodySmall)))),
                   ],
                 ),
                 Text(
                   "Last Location:",
-                  style: Theme.of(context).textTheme.bodySmall,
+                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(fontWeight: FontWeight.w500),
                 ),
                 ShimmerOrChildWithData(
                     data: character,
                     width: const ShimmerWidth.fullWidth(),
                     height: const ShimmerHeight.small(),
-                    getChild: (character) => (Text(
+                    getChild: (character) => (SizedBox(height: 20,child:AutoSizeText(
                           character.location.name,
-                          style: Theme.of(context).textTheme.bodyMedium,
-                        )))
+                          maxLines: 1,
+                          style: Theme.of(context).textTheme.bodySmall,
+                      overflowReplacement: Marquee(
+                        text :character.location.name,
+                        style: Theme.of(context).textTheme.bodySmall,
+                        pauseAfterRound: const Duration(milliseconds: 1000),
+                        blankSpace: 20,
+                        scrollAxis: Axis.horizontal,
+                      ),
+                        ))))
               ],
             )));
   }
