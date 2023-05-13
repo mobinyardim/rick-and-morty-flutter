@@ -5,6 +5,12 @@ import 'package:rick_and_morty_flutter/components/shimmer.dart';
 import '../models/Character.dart';
 import '../utils/window_utils.dart';
 
+extension HeroTags on Character {
+  String getCharacterImageTag() {
+    return "character_image_$id";
+  }
+}
+
 class CharacterItem extends StatelessWidget {
   final Character? character;
   final void Function()? onPressed;
@@ -30,17 +36,22 @@ class CharacterItem extends StatelessWidget {
                   direction:
                       isDesktop(context) ? Axis.horizontal : Axis.vertical,
                   children: [
-                    AspectRatio(
-                        aspectRatio: 1,
-                        child: ShimmerOrChildWithData<Character>(
-                            data: character,
-                            width: const ShimmerWidth.fullWidth(),
-                            height: const ShimmerHeight.fullHeight(),
-                            getChild: (character) => (Image.network(
-                                  character.image,
-                                  width: isDesktop(context) ? 100 : cardWidth,
-                                  height: isDesktop(context) ? 100 : cardWidth,
-                                )))),
+                    Hero(
+                        tag: character?.getCharacterImageTag() ?? "",
+                        child: AspectRatio(
+                            aspectRatio: 1,
+                            child: ShimmerOrChildWithData<Character>(
+                                data: character,
+                                width: const ShimmerWidth.fullWidth(),
+                                height: const ShimmerHeight.fullHeight(),
+                                getChild: (character) {
+                                  return Image.network(
+                                    character.image,
+                                    width: isDesktop(context) ? 100 : cardWidth,
+                                    height:
+                                        isDesktop(context) ? 100 : cardWidth,
+                                  );
+                                }))),
                     isDesktop(context)
                         ? _getItemContent(context)
                         : _getItemContent(context)
@@ -108,23 +119,28 @@ class CharacterItem extends StatelessWidget {
                 ),
                 Text(
                   "Last Location:",
-                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(fontWeight: FontWeight.w500),
+                  style: Theme.of(context)
+                      .textTheme
+                      .bodyMedium
+                      ?.copyWith(fontWeight: FontWeight.w500),
                 ),
                 ShimmerOrChildWithData(
                     data: character,
                     width: const ShimmerWidth.fullWidth(),
                     height: const ShimmerHeight.small(),
-                    getChild: (character) => (SizedBox(height: 20,child:AutoSizeText(
+                    getChild: (character) => (SizedBox(
+                        height: 20,
+                        child: AutoSizeText(
                           character.location.name,
                           maxLines: 1,
                           style: Theme.of(context).textTheme.bodySmall,
-                      overflowReplacement: Marquee(
-                        text :character.location.name,
-                        style: Theme.of(context).textTheme.bodySmall,
-                        pauseAfterRound: const Duration(milliseconds: 1000),
-                        blankSpace: 20,
-                        scrollAxis: Axis.horizontal,
-                      ),
+                          overflowReplacement: Marquee(
+                            text: character.location.name,
+                            style: Theme.of(context).textTheme.bodySmall,
+                            pauseAfterRound: const Duration(milliseconds: 1000),
+                            blankSpace: 20,
+                            scrollAxis: Axis.horizontal,
+                          ),
                         ))))
               ],
             )));
