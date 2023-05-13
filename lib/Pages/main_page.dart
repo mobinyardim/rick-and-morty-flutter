@@ -3,9 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rick_and_morty_flutter/Pages/navigation_items.dart';
 import 'package:rick_and_morty_flutter/blocs/characters/characters_bloc.dart';
+import 'package:rick_and_morty_flutter/blocs/characters/characters_event.dart';
 import 'package:rick_and_morty_flutter/components/my_navigation_rail.dart';
 import 'package:rick_and_morty_flutter/repositories/character/character_repository.dart';
 import 'package:rick_and_morty_flutter/routes/routes.dart';
+import 'package:rick_and_morty_flutter/utils/logger.dart';
 
 import '../components/drawer_item.dart';
 import '../utils/window_utils.dart';
@@ -23,13 +25,13 @@ class MainPage extends StatefulWidget {
 class _MainPageState extends State<MainPage> {
   int selectedTabIndex = 0;
 
+  bool isNavigationRailExtended = false;
+
   void setSelectedTabIndex(int current) {
     setState(() {
       selectedTabIndex = current;
     });
   }
-
-  var isNavigationRailExtended = false;
 
   void seNavigationRailExtended(bool extended) {
     setState(() {
@@ -58,32 +60,36 @@ class _MainPageState extends State<MainPage> {
   @override
   Widget build(BuildContext context) {
     return MainPageNavigates(
-        navigateToCharacters: () {
-          _onItemTapped(1, context);
-        },
-        navigateToEpisodes: () {
-          _onItemTapped(2, context);
-        },
-        navigateToHome: () {
-          _onItemTapped(0, context);
-        },
-        navigateToLocations: () {
-          _onItemTapped(3, context);
-        },
-        child: BlocProvider<CharactersBloc>(
-            create: (BuildContext context) {
-              return CharactersBloc(
-                  characterRepository:
-                      RepositoryProvider.of<CharacterRepository>(context));
-            },
-            child: LayoutBuilder(
-              builder: (BuildContext context, BoxConstraints constraints) =>
-                  Scaffold(
+      child: BlocProvider<CharactersBloc>(
+          create: (BuildContext context) {
+            logger.i("create characters bloc");
+            return CharactersBloc(
+                characterRepository:
+                RepositoryProvider.of<CharacterRepository>(context))
+              ..add(CharactersFetchFirstPage());
+          },
+          child: LayoutBuilder(
+            builder: (BuildContext context, BoxConstraints constraints) {
+              return Scaffold(
                 appBar: _createAppBar(context),
                 body: _createBody(context),
                 drawer: _createDrawer(context),
-              ),
-            )));
+              );
+            },
+          )),
+      navigateToCharacters: () {
+        _onItemTapped(1, context);
+      },
+      navigateToEpisodes: () {
+        _onItemTapped(2, context);
+      },
+      navigateToHome: () {
+        _onItemTapped(0, context);
+      },
+      navigateToLocations: () {
+        _onItemTapped(3, context);
+      },
+    );
   }
 
   AppBar? _createAppBar(BuildContext context) {
@@ -107,8 +113,9 @@ class _MainPageState extends State<MainPage> {
           height: 30,
         ),
         destinations: [
-          ...navItems.map((item) => NavigationRailDestination(
-              icon: Icon(item.icon), label: Text(item.label)))
+          ...navItems.map((item) =>
+              NavigationRailDestination(
+                  icon: Icon(item.icon), label: Text(item.label)))
         ],
         selectedIndex: selectedTabIndex,
         onDestinationSelected: (index) {
@@ -128,17 +135,19 @@ class _MainPageState extends State<MainPage> {
       return NavigationDrawer(
         selectedIndex: selectedTabIndex,
         children: [
-          ...navItems.mapIndexed((index, item) => Padding(
-              padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 16),
-              child: DrawerItem(
-                item: item,
-                onTap: () {
-                  _onItemTapped(index, context);
-                  Navigator.pop(context);
-                },
-                key: Key(item.label),
-                isSelected: selectedTabIndex == index,
-              )))
+          ...navItems.mapIndexed((index, item) =>
+              Padding(
+                  padding: const EdgeInsets.symmetric(
+                      vertical: 4, horizontal: 16),
+                  child: DrawerItem(
+                    item: item,
+                    onTap: () {
+                      _onItemTapped(index, context);
+                      Navigator.pop(context);
+                    },
+                    key: Key(item.label),
+                    isSelected: selectedTabIndex == index,
+                  )))
         ],
       );
     }
@@ -162,7 +171,7 @@ class MainPageNavigates extends InheritedWidget {
 
   static MainPageNavigates of(BuildContext context) {
     final MainPageNavigates? result =
-        context.dependOnInheritedWidgetOfExactType<MainPageNavigates>();
+    context.dependOnInheritedWidgetOfExactType<MainPageNavigates>();
     assert(result != null, 'No MainPageNavigates found in context');
     return result!;
   }

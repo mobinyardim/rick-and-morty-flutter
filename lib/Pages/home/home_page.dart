@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rick_and_morty_flutter/Pages/main_page.dart';
 import 'package:rick_and_morty_flutter/blocs/characters/characters_bloc.dart';
-import 'package:rick_and_morty_flutter/blocs/characters/characters_event.dart';
 import 'package:rick_and_morty_flutter/blocs/characters/characters_state.dart';
 import 'package:rick_and_morty_flutter/components/character_item.dart';
 import 'package:rick_and_morty_flutter/components/grid_with_title.dart';
@@ -19,11 +18,6 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  @override
-  void initState() {
-    super.initState();
-    BlocProvider.of<CharactersBloc>(context).add(CharactersFetchFirstPage());
-  }
 
   @override
   Widget build(BuildContext context) {
