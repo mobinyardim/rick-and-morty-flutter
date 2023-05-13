@@ -10,17 +10,25 @@ import 'package:rick_and_morty_flutter/Pages/main_page.dart';
 part 'routes.g.dart';
 
 @TypedShellRoute<HomeContainerRoute>(routes: [
-  TypedGoRoute<HomeRoute>(path: "/"),
+  TypedGoRoute<HomeRoute>(path: "/", routes: [
+    TypedGoRoute<CharacterDetailRoute>(path: "characters/:characterId")
+  ]),
   TypedGoRoute<CharactersRoute>(path: "/characters"),
   TypedGoRoute<EpisodesRoute>(path: "/episodes"),
   TypedGoRoute<LocationsRoute>(path: "/locations"),
-  TypedGoRoute<CharacterDetailRoute>(path: "/character-detail/:characterId"),
 ])
 @immutable
 class HomeContainerRoute extends ShellRouteData {
   @override
-  Widget builder(BuildContext context, GoRouterState state, Widget navigator) {
-    return MainPage(title: "Rick And Morty", child: navigator);
+  Page<void> pageBuilder(
+      BuildContext context, GoRouterState state, Widget navigator) {
+    return MaterialPage(
+        child: HeroControllerScope(
+            controller: MaterialApp.createMaterialHeroController(),
+            child: LayoutBuilder(
+                // yes that LayoutBuilder is important. I don't know why
+                builder: (ctx, constraints) =>
+                    MainPage(title: "Rick And Morty", child: navigator))));
   }
 }
 
@@ -35,23 +43,7 @@ class HomeRoute extends GoRouteData {
 
   @override
   Page<Function> buildPage(BuildContext context, GoRouterState state) {
-    return CustomTransitionPage<Function>(
-      key: state.pageKey,
-      child: const HomePage(),
-      transitionDuration: const Duration(milliseconds: 150),
-      transitionsBuilder: (BuildContext context,
-          Animation<double> animation,
-          Animation<double> secondaryAnimation,
-          Widget child) {
-        // Change the opacity of the screen using a Curve based on the the animation's
-        // value
-        return FadeTransition(
-          opacity:
-          CurveTween(curve: Curves.easeInOut).animate(animation),
-          child: child,
-        );
-      },
-    );
+    return const NoTransitionPage(child: HomePage());
   }
 }
 
@@ -70,15 +62,12 @@ class CharactersRoute extends GoRouteData {
       key: state.pageKey,
       child: const CharactersPage(),
       transitionDuration: const Duration(milliseconds: 150),
-      transitionsBuilder: (BuildContext context,
-          Animation<double> animation,
-          Animation<double> secondaryAnimation,
-          Widget child) {
+      transitionsBuilder: (BuildContext context, Animation<double> animation,
+          Animation<double> secondaryAnimation, Widget child) {
         // Change the opacity of the screen using a Curve based on the the animation's
         // value
         return FadeTransition(
-          opacity:
-          CurveTween(curve: Curves.easeInOut).animate(animation),
+          opacity: CurveTween(curve: Curves.easeInOut).animate(animation),
           child: child,
         );
       },
@@ -113,7 +102,20 @@ class CharacterDetailRoute extends GoRouteData {
   const CharacterDetailRoute({required this.characterId});
 
   @override
-  Widget build(BuildContext context, GoRouterState state) {
-    return CharacterDetailPage(characterId: characterId);
+  Page<void> buildPage(BuildContext context, GoRouterState state) {
+    return CustomTransitionPage<Function>(
+      key: state.pageKey,
+      child: CharacterDetailPage(characterId: characterId),
+      transitionDuration: const Duration(milliseconds: 150),
+      transitionsBuilder: (BuildContext context, Animation<double> animation,
+          Animation<double> secondaryAnimation, Widget child) {
+        // Change the opacity of the screen using a Curve based on the the animation's
+        // value
+        return FadeTransition(
+          opacity: CurveTween(curve: Curves.easeInOut).animate(animation),
+          child: child,
+        );
+      },
+    );
   }
 }
