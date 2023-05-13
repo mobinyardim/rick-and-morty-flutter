@@ -31,7 +31,7 @@ class MySliverPersistentHeaderDelegate extends SliverPersistentHeaderDelegate {
           )
         : Container(
             color: Theme.of(context).colorScheme.background,
-            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
             alignment: Alignment.centerLeft,
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.center,
@@ -39,9 +39,9 @@ class MySliverPersistentHeaderDelegate extends SliverPersistentHeaderDelegate {
               children: [
                 child,
                 showSeeMoreButton
-                    ? TextButton(
+                    ? (TextButton(
                         onPressed: onSeeMore ?? () {},
-                        child: Row(
+                        child: SizedBox(height: 24, child:Row(
                             crossAxisAlignment: CrossAxisAlignment.center,
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
@@ -54,8 +54,8 @@ class MySliverPersistentHeaderDelegate extends SliverPersistentHeaderDelegate {
                                         color: Theme.of(context).primaryColor),
                               ),
                               const Icon(Icons.keyboard_arrow_right_rounded)
-                            ]),
-                      )
+                            ])),
+                      ))
                     : Container()
               ],
             ),
