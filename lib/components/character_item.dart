@@ -2,6 +2,7 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:marquee/marquee.dart';
 import 'package:rick_and_morty_flutter/components/shimmer.dart';
+import 'package:uuid/uuid.dart';
 import '../models/Character.dart';
 import '../utils/window_utils.dart';
 
@@ -37,7 +38,7 @@ class CharacterItem extends StatelessWidget {
                       isDesktop(context) ? Axis.horizontal : Axis.vertical,
                   children: [
                     Hero(
-                        tag: character?.getCharacterImageTag() ?? "",
+                        tag: character?.getCharacterImageTag() ?? const Uuid().v4(),
                         child: AspectRatio(
                             aspectRatio: 1,
                             child: ShimmerOrChildWithData<Character>(
@@ -52,9 +53,7 @@ class CharacterItem extends StatelessWidget {
                                         isDesktop(context) ? 100 : cardWidth,
                                   );
                                 }))),
-                    isDesktop(context)
-                        ? _getItemContent(context)
-                        : _getItemContent(context)
+                    _getItemContent(context)
                   ],
                 ),
               ))),
