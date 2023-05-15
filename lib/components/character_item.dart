@@ -1,8 +1,20 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:marquee/marquee.dart';
 import 'package:rick_and_morty_flutter/components/shimmer.dart';
+import 'package:uuid/uuid.dart';
 import '../models/Character.dart';
 import '../utils/window_utils.dart';
+
+extension HeroTags on Character {
+  String getImageHeroTag() {
+    return "character_image_$id";
+  }
+
+  String getNameHeroTag() {
+    return "character_name_$id";
+  }
+}
 
 class CharacterItem extends StatelessWidget {
   final Character? character;
@@ -29,20 +41,23 @@ class CharacterItem extends StatelessWidget {
                   direction:
                       isDesktop(context) ? Axis.horizontal : Axis.vertical,
                   children: [
-                    AspectRatio(
-                        aspectRatio: 1,
-                        child: ShimmerOrChildWithData<Character>(
-                            data: character,
-                            width: const ShimmerWidth.fullWidth(),
-                            height: const ShimmerHeight.fullHeight(),
-                            getChild: (character) => (Image.network(
-                                  character.image,
-                                  width: isDesktop(context) ? 100 : cardWidth,
-                                  height: isDesktop(context) ? 100 : cardWidth,
-                                )))),
-                    isDesktop(context)
-                        ? _getItemContent(context)
-                        : _getItemContent(context)
+                    Hero(
+                        tag: character?.getImageHeroTag() ?? const Uuid().v4(),
+                        child: AspectRatio(
+                            aspectRatio: 1,
+                            child: ShimmerOrChildWithData<Character>(
+                                data: character,
+                                width: const ShimmerWidth.fullWidth(),
+                                height: const ShimmerHeight.fullHeight(),
+                                getChild: (character) {
+                                  return Image.network(
+                                    character.image,
+                                    width: isDesktop(context) ? 100 : cardWidth,
+                                    height:
+                                        isDesktop(context) ? 100 : cardWidth,
+                                  );
+                                }))),
+                    _getItemContent(context)
                   ],
                 ),
               ))),
@@ -55,93 +70,93 @@ class CharacterItem extends StatelessWidget {
             padding: const EdgeInsets.all(8),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 ShimmerOrChildWithData(
                     data: character,
                     width: const ShimmerWidth.fullWidth(),
                     getChild: (character) => (SizedBox(
                         height: 24,
-                        child: Marquee(
-                          text: character.name,
-                          style: Theme.of(context).textTheme.titleLarge,
-                          scrollAxis: Axis.horizontal,
-                        )))),
+                        child: Hero(
+                            tag: character.getNameHeroTag(),
+                            child: AutoSizeText(
+                              character.name,
+                              style: Theme.of(context).textTheme.titleLarge,
+                              maxLines: 1,
+                              overflowReplacement: Marquee(
+                                blankSpace: 20,
+                                pauseAfterRound:
+                                    const Duration(milliseconds: 1000),
+                                text: character.name,
+                                style: Theme.of(context).textTheme.titleLarge,
+                                scrollAxis: Axis.horizontal,
+                              ),
+                            ))))),
                 Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    SizedBox(
-                        width: 10,
-                        height: 10,
-                        child: Container(
-                          decoration: BoxDecoration(
-                              shape: BoxShape.circle, color: _getStatusColor()),
-                        )),
+                    Expanded(
+                        child: ShimmerOrChild(
+                            isLoading: character == null,
+                            width: const ShimmerWidth.fullWidth(),
+                            child: Text("Gender:",
+                                style: Theme.of(context).textTheme.bodySmall))),
                     const SizedBox(
                       width: 4,
                       height: 4,
                     ),
                     Expanded(
-                        child: ShimmerOrChild(
-                            isLoading: character == null,
-                            width: const ShimmerWidth.fullWidth(),
-                            child: Text(_getStatus(),
-                                style: Theme.of(context).textTheme.bodyLarge))),
-                    Text(" - ", style: Theme.of(context).textTheme.bodyLarge),
-                    Expanded(
                         child: ShimmerOrChildWithData(
                             data: character,
                             width: const ShimmerWidth.fullWidth(),
-                            getChild: (character) => (Text(character.species,
+                            getChild: (character) => (Text(_getGender(),
                                 style:
-                                    Theme.of(context).textTheme.bodyLarge)))),
+                                    Theme.of(context).textTheme.bodySmall)))),
                   ],
                 ),
                 Text(
                   "Last Location:",
-                  style: Theme.of(context).textTheme.bodySmall,
+                  style: Theme.of(context)
+                      .textTheme
+                      .bodyMedium
+                      ?.copyWith(fontWeight: FontWeight.w500),
                 ),
                 ShimmerOrChildWithData(
                     data: character,
                     width: const ShimmerWidth.fullWidth(),
                     height: const ShimmerHeight.small(),
-                    getChild: (character) => (Text(
+                    getChild: (character) => (SizedBox(
+                        height: 20,
+                        child: AutoSizeText(
                           character.location.name,
-                          style: Theme.of(context).textTheme.bodyMedium,
-                        )))
+                          maxLines: 1,
+                          style: Theme.of(context).textTheme.bodySmall,
+                          overflowReplacement: Marquee(
+                            text: character.location.name,
+                            style: Theme.of(context).textTheme.bodySmall,
+                            pauseAfterRound: const Duration(milliseconds: 1000),
+                            blankSpace: 20,
+                            scrollAxis: Axis.horizontal,
+                          ),
+                        ))))
               ],
             )));
   }
 
-  Color _getStatusColor() {
-    Color statusColor = Colors.red;
-    switch (character?.status ?? CharacterStatus.unknown) {
-      case CharacterStatus.alive:
-        {
-          statusColor = Colors.green;
-          break;
-        }
-      case CharacterStatus.dead:
-        statusColor = Colors.red;
-        break;
-      case CharacterStatus.unknown:
-        statusColor = Colors.grey;
-        break;
-    }
-    return statusColor;
-  }
-
-  String _getStatus() {
+  String _getGender() {
     String statusText = "";
-    switch (character?.status ?? CharacterStatus.unknown) {
-      case CharacterStatus.alive:
-        statusText = "Alive";
+    switch (character?.gender ?? CharacterStatus.unknown) {
+      case Gender.female:
+        statusText = "Female";
         break;
-      case CharacterStatus.dead:
-        statusText = "Dead";
+      case Gender.male:
+        statusText = "Male";
         break;
-      case CharacterStatus.unknown:
+      case Gender.genderless:
+        statusText = "Genderless";
+        break;
+      case Gender.unknown:
         statusText = "Unknown";
         break;
     }

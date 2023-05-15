@@ -9,5 +9,5 @@ abstract class CharacterRemoteSource {
     return CharacterRemoteSourceImpl.create();
   }
 
-  Future<PagedDataDto<CharacterDto>> getAll();
+  Future<PagedDataDto<CharacterDto>> getAll(int page);
 }
