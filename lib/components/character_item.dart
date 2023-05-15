@@ -42,8 +42,7 @@ class CharacterItem extends StatelessWidget {
                       isDesktop(context) ? Axis.horizontal : Axis.vertical,
                   children: [
                     Hero(
-                        tag: character?.getImageHeroTag() ??
-                            const Uuid().v4(),
+                        tag: character?.getImageHeroTag() ?? const Uuid().v4(),
                         child: AspectRatio(
                             aspectRatio: 1,
                             child: ShimmerOrChildWithData<Character>(
@@ -71,7 +70,7 @@ class CharacterItem extends StatelessWidget {
             padding: const EdgeInsets.all(8),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 ShimmerOrChildWithData(
                     data: character,
@@ -94,32 +93,24 @@ class CharacterItem extends StatelessWidget {
                               ),
                             ))))),
                 Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    SizedBox(
-                        width: 10,
-                        height: 10,
-                        child: Container(
-                          decoration: BoxDecoration(
-                              shape: BoxShape.circle, color: _getStatusColor()),
-                        )),
+                    Expanded(
+                        child: ShimmerOrChild(
+                            isLoading: character == null,
+                            width: const ShimmerWidth.fullWidth(),
+                            child: Text("Gender:",
+                                style: Theme.of(context).textTheme.bodySmall))),
                     const SizedBox(
                       width: 4,
                       height: 4,
                     ),
                     Expanded(
-                        child: ShimmerOrChild(
-                            isLoading: character == null,
-                            width: const ShimmerWidth.fullWidth(),
-                            child: Text(_getStatus(),
-                                style: Theme.of(context).textTheme.bodySmall))),
-                    Text(" - ", style: Theme.of(context).textTheme.bodySmall),
-                    Expanded(
                         child: ShimmerOrChildWithData(
                             data: character,
                             width: const ShimmerWidth.fullWidth(),
-                            getChild: (character) => (Text(character.species,
+                            getChild: (character) => (Text(_getGender(),
                                 style:
                                     Theme.of(context).textTheme.bodySmall)))),
                   ],
@@ -181,6 +172,25 @@ class CharacterItem extends StatelessWidget {
         statusText = "Dead";
         break;
       case CharacterStatus.unknown:
+        statusText = "Unknown";
+        break;
+    }
+    return statusText;
+  }
+
+  String _getGender() {
+    String statusText = "";
+    switch (character?.gender ?? CharacterStatus.unknown) {
+      case Gender.female:
+        statusText = "Female";
+        break;
+      case Gender.male:
+        statusText = "Male";
+        break;
+      case Gender.genderless:
+        statusText = "Genderless";
+        break;
+      case Gender.unknown:
         statusText = "Unknown";
         break;
     }

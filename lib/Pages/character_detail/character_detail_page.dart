@@ -1,6 +1,8 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:marquee/marquee.dart';
 import 'package:rick_and_morty_flutter/blocs/characters/characters_bloc.dart';
 import 'package:rick_and_morty_flutter/blocs/characters/characters_state.dart';
 import 'package:rick_and_morty_flutter/components/character_item.dart';
@@ -54,11 +56,18 @@ class _CharacterDetailPageState extends State<CharacterDetailPage> {
                 : Container(),
             Flex(
                 direction: isDesktop(context) ? Axis.horizontal : Axis.vertical,
-                crossAxisAlignment: CrossAxisAlignment.start,
+                crossAxisAlignment: isDesktop(context)
+                    ? CrossAxisAlignment.start
+                    : CrossAxisAlignment.center,
                 children: [
                   Stack(
                     children: [
-                      _getImage(character),
+                      isDesktop(context)
+                          ? _getImage(character)
+                          : Align(
+                              alignment: Alignment.center,
+                              child: _getImage(character),
+                            ),
                       isDesktop(context)
                           ? Container()
                           : Padding(
@@ -80,12 +89,27 @@ class _CharacterDetailPageState extends State<CharacterDetailPage> {
                     width: 20,
                     height: 20,
                   ),
-                  Column(children: [
-                    Hero(tag: character.getNameHeroTag() , child:Text(
-                      character.name,
-                      style: Theme.of(context).textTheme.displaySmall,
-                    ))
-                  ])
+                  Expanded(
+                      child: Column(children: [
+                    Hero(
+                        tag: character.getNameHeroTag(),
+                        child: SizedBox(
+                            height: 40,
+                            child: AutoSizeText(
+                              character.name,
+                              maxLines: 1,
+                              minFontSize: 30,
+                              style: Theme.of(context).textTheme.titleMedium,
+                              overflowReplacement: Marquee(
+                                text: character.name,
+                                style: Theme.of(context).textTheme.titleMedium,
+                                pauseAfterRound:
+                                    const Duration(milliseconds: 1000),
+                                blankSpace: 20,
+                                scrollAxis: Axis.horizontal,
+                              ),
+                            )))
+                  ]))
                 ])
           ],
         ));
@@ -94,7 +118,7 @@ class _CharacterDetailPageState extends State<CharacterDetailPage> {
   Widget _getImage(
     Character character,
   ) {
-    double imageSize = isDesktop(context) ? 300 : double.infinity;
+    double imageSize = isDesktop(context) ? 250 : 250;
 
     return ClipRRect(
         borderRadius: BorderRadius.circular(8.0),
