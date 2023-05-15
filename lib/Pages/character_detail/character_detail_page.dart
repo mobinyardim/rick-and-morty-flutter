@@ -52,26 +52,41 @@ class _CharacterDetailPageState extends State<CharacterDetailPage> {
                     ),
                   )
                 : Container(),
-            Stack(
-              children: [
-                _getImage(character),
-                isDesktop(context)
-                    ? Container()
-                    : Padding(
-                        padding: const EdgeInsets.all(5),
-                        child: Align(
-                            alignment: Alignment.topRight,
-                            child: InkWell(
-                                onTap: () {
-                                  GoRouter.of(context).pop();
-                                },
-                                child: const Icon(
-                                  Icons.close,
-                                  size: 32,
-                                ))),
-                      )
-              ],
-            )
+            Flex(
+                direction: isDesktop(context) ? Axis.horizontal : Axis.vertical,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Stack(
+                    children: [
+                      _getImage(character),
+                      isDesktop(context)
+                          ? Container()
+                          : Padding(
+                              padding: const EdgeInsets.all(5),
+                              child: Align(
+                                  alignment: Alignment.topRight,
+                                  child: InkWell(
+                                      onTap: () {
+                                        GoRouter.of(context).pop();
+                                      },
+                                      child: const Icon(
+                                        Icons.close,
+                                        size: 32,
+                                      ))),
+                            )
+                    ],
+                  ),
+                  const SizedBox(
+                    width: 20,
+                    height: 20,
+                  ),
+                  Column(children: [
+                    Hero(tag: character.getNameHeroTag() , child:Text(
+                      character.name,
+                      style: Theme.of(context).textTheme.displaySmall,
+                    ))
+                  ])
+                ])
           ],
         ));
   }
@@ -84,19 +99,21 @@ class _CharacterDetailPageState extends State<CharacterDetailPage> {
     return ClipRRect(
         borderRadius: BorderRadius.circular(8.0),
         child: Hero(
-            tag: character.getCharacterImageTag(),
-            child: AspectRatio(
-                aspectRatio: 1,
-                child: ShimmerOrChildWithData<Character>(
-                    data: character,
-                    width: const ShimmerWidth.fullWidth(),
-                    height: const ShimmerHeight.fullHeight(),
-                    getChild: (character) {
-                      return (Image.network(
-                        character.image,
-                        width: imageSize,
-                        fit: BoxFit.fill,
-                      ));
-                    }))));
+            tag: character.getImageHeroTag(),
+            child: SizedBox(
+                width: imageSize,
+                child: AspectRatio(
+                    aspectRatio: 1,
+                    child: ShimmerOrChildWithData<Character>(
+                        data: character,
+                        width: const ShimmerWidth.fullWidth(),
+                        height: const ShimmerHeight.fullHeight(),
+                        getChild: (character) {
+                          return (Image.network(
+                            character.image,
+                            width: imageSize,
+                            fit: BoxFit.fill,
+                          ));
+                        })))));
   }
 }
