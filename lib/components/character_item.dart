@@ -144,40 +144,6 @@ class CharacterItem extends StatelessWidget {
             )));
   }
 
-  Color _getStatusColor() {
-    Color statusColor = Colors.red;
-    switch (character?.status ?? CharacterStatus.unknown) {
-      case CharacterStatus.alive:
-        {
-          statusColor = Colors.green;
-          break;
-        }
-      case CharacterStatus.dead:
-        statusColor = Colors.red;
-        break;
-      case CharacterStatus.unknown:
-        statusColor = Colors.grey;
-        break;
-    }
-    return statusColor;
-  }
-
-  String _getStatus() {
-    String statusText = "";
-    switch (character?.status ?? CharacterStatus.unknown) {
-      case CharacterStatus.alive:
-        statusText = "Alive";
-        break;
-      case CharacterStatus.dead:
-        statusText = "Dead";
-        break;
-      case CharacterStatus.unknown:
-        statusText = "Unknown";
-        break;
-    }
-    return statusText;
-  }
-
   String _getGender() {
     String statusText = "";
     switch (character?.gender ?? CharacterStatus.unknown) {
