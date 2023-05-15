@@ -9,9 +9,9 @@ class DrawerItem extends StatelessWidget {
 
   const DrawerItem(
       {super.key,
-        required this.item,
-        required this.onTap,
-        this.isSelected = false});
+      required this.item,
+      required this.onTap,
+      this.isSelected = false});
 
   @override
   Widget build(BuildContext context) {
@@ -23,20 +23,19 @@ class DrawerItem extends StatelessWidget {
         onTap: onTap,
         child: Padding(
             padding: const EdgeInsets.symmetric(vertical: 2, horizontal: 6),
-            child: Expanded(
-                child: SizedBox(
-                    height: 50,
-                    child: Row(
-                      children: [
-                        Icon(item.icon, color: color),
-                        const SizedBox(
-                          width: 5,
-                        ),
-                        Text(
-                          item.label,
-                          style: TextStyle(color: color),
-                        )
-                      ],
-                    )))));
+            child: SizedBox(
+                height: 50,
+                child: Row(
+                  children: [
+                    Icon(item.icon, color: color),
+                    const SizedBox(
+                      width: 5,
+                    ),
+                    Text(
+                      item.label,
+                      style: TextStyle(color: color),
+                    )
+                  ],
+                ))));
   }
 }
