@@ -7,8 +7,12 @@ import '../models/Character.dart';
 import '../utils/window_utils.dart';
 
 extension HeroTags on Character {
-  String getCharacterImageTag() {
+  String getImageHeroTag() {
     return "character_image_$id";
+  }
+
+  String getNameHeroTag() {
+    return "character_name_$id";
   }
 }
 
@@ -38,7 +42,8 @@ class CharacterItem extends StatelessWidget {
                       isDesktop(context) ? Axis.horizontal : Axis.vertical,
                   children: [
                     Hero(
-                        tag: character?.getCharacterImageTag() ?? const Uuid().v4(),
+                        tag: character?.getImageHeroTag() ??
+                            const Uuid().v4(),
                         child: AspectRatio(
                             aspectRatio: 1,
                             child: ShimmerOrChildWithData<Character>(
@@ -73,18 +78,21 @@ class CharacterItem extends StatelessWidget {
                     width: const ShimmerWidth.fullWidth(),
                     getChild: (character) => (SizedBox(
                         height: 24,
-                        child: AutoSizeText(
-                          character.name,
-                          style: Theme.of(context).textTheme.titleLarge,
-                          maxLines: 1,
-                          overflowReplacement: Marquee(
-                            blankSpace: 20,
-                            pauseAfterRound: const Duration(milliseconds: 1000),
-                            text: character.name,
-                            style: Theme.of(context).textTheme.titleLarge,
-                            scrollAxis: Axis.horizontal,
-                          ),
-                        )))),
+                        child: Hero(
+                            tag: character.getNameHeroTag(),
+                            child: AutoSizeText(
+                              character.name,
+                              style: Theme.of(context).textTheme.titleLarge,
+                              maxLines: 1,
+                              overflowReplacement: Marquee(
+                                blankSpace: 20,
+                                pauseAfterRound:
+                                    const Duration(milliseconds: 1000),
+                                text: character.name,
+                                style: Theme.of(context).textTheme.titleLarge,
+                                scrollAxis: Axis.horizontal,
+                              ),
+                            ))))),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.center,
