@@ -41,6 +41,7 @@ class _CharacterDetailPageState extends State<CharacterDetailPage> {
         padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
         child: Flex(
             direction: isDesktop(context) ? Axis.horizontal : Axis.vertical,
+            mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: isDesktop(context)
                 ? CrossAxisAlignment.center
                 : CrossAxisAlignment.center,
@@ -74,12 +75,11 @@ class _CharacterDetailPageState extends State<CharacterDetailPage> {
                 width: 20,
                 height: 20,
               ),
-              Expanded(
-                  child: Center(
-                      child: ConstrainedBox(
-                          constraints:
-                              const BoxConstraints(maxWidth: 500, minWidth: 0),
-                          child: _getInfoCard(character, context))))
+              Center(
+                  child: ConstrainedBox(
+                      constraints:
+                          const BoxConstraints(maxWidth: 500, minWidth: 0),
+                      child: _getInfoCard(character, context)))
             ]));
   }
 
@@ -109,15 +109,15 @@ class _CharacterDetailPageState extends State<CharacterDetailPage> {
                 Hero(
                     tag: character.getNameHeroTag(),
                     child: SizedBox(
-                        height: 100,
+                        height: 40,
                         child: AutoSizeText(
                           character.name,
                           maxLines: 2,
                           minFontSize: 30,
-                          style: Theme.of(context).textTheme.titleLarge,
+                          style: Theme.of(context).textTheme.titleMedium,
                           overflowReplacement: Marquee(
                             text: character.name,
-                            style: Theme.of(context).textTheme.titleLarge,
+                            style: Theme.of(context).textTheme.titleMedium,
                             pauseAfterRound: const Duration(milliseconds: 1000),
                             blankSpace: 60,
                             startAfter: const Duration(milliseconds: 1000),
@@ -175,6 +175,7 @@ class _CharacterDetailPageState extends State<CharacterDetailPage> {
             tag: character.getImageHeroTag(),
             child: SizedBox(
                 width: imageSize,
+                height: imageSize,
                 child: AspectRatio(
                     aspectRatio: 1,
                     child: ShimmerOrChildWithData<Character>(
